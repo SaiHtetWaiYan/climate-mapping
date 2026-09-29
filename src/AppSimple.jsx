@@ -26,10 +26,10 @@ const App = () => {
                         <img
                             className="app-container__window-too-small-img"
                             src={logo}
-                            alt={'Climate Futures Myanmar logo'}
+                            alt={'Climate Mapping logo'}
                             width="50"
                         />
-                        Climate Futures Myanmar
+                        Climate Mapping
                     </a>
                     <p>
                         This tool currently does not support mobile devices or screens that have a resolution less

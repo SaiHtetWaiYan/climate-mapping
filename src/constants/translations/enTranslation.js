@@ -1,6 +1,6 @@
 const enTranslation = {
     App: {
-        Title: 'Climate Futures Myanmar',
+        Title: 'Climate Mapping',
         BackButtonText: 'Back',
     },
     Alert: {
