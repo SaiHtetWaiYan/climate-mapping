@@ -1,0 +1,151 @@
+.mapLegend {
+    &-container {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        position: absolute;
+        inset-block-end: 45px;
+        inset-inline-end: 1.5rem;
+        height: auto;
+        width: clamp(200px, 24.925926vw, 400px);
+        border: 1px solid var(--color-primary);
+        padding: 1.5rem 1.5rem 1.25rem;
+        backdrop-filter: blur(10px);
+        z-index: 1;
+        container-name: map_legend;
+        container-type: inline-size;
+
+        &::after {
+            content: '';
+            background: #fff;
+            opacity: 0.7;
+            position: absolute;
+            inset-block-start: 0;
+            inset-inline-start: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    }
+
+    &-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        width: 100%;
+
+        &:has(.mapLegend-icon) {
+            margin-block-end: 0.5rem;
+        }
+    }
+
+    &-icon {
+        width: 56px;
+        flex-shrink: 0;
+    }
+
+    &-header {
+        color: var(--color-primary);
+        text-wrap-style: pretty;
+        padding-inline-end: 0.5rem;
+        line-height: 1.2;
+        letter-spacing: 0.5px;
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    &-colors-container {
+        height: 1.5rem;
+        width: 100%;
+    }
+
+    &-values-container {
+        width: 100%;
+        display: flex;
+        padding-left: 5px;
+        padding-right: 15px;
+        min-height: 14px;
+        justify-content: space-between;
+        font-size: 12px;
+    }
+
+    &-values-container#{&}__slr-legend {
+        flex-direction: column;
+        margin-block-start: 0.5rem;
+        gap: 0.65rem;
+        padding-left: 0;
+
+        & .mapLegend-row {
+            display: flex;
+            align-items: center;
+        }
+
+        & .mapLegend-row span {
+            text-box-trim: trim-both;
+        }
+    }
+
+    &-building-code-container {
+        font-size: 0.75rem;
+        margin-block-start: 1rem;
+
+        & a {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+    }
+}
+
+span[class*='-slr'] {
+    background: #0070ff;
+    display: inline-block;
+    width: 16px;
+    aspect-ratio: 1 / 1;
+}
+
+span.gray-slr {
+    background: #5c5c5c;
+}
+
+.blue-5 {
+    background: linear-gradient(to right, #f1eef6ff, #bdc9e1ff, #74a9cfff, #2b8cbeff, #045a8dff);
+}
+.blue-6 {
+    background: linear-gradient(to right, #ffffccff, #a1dab4ff, #41b6c4ff, #2c7fb8ff, #253494ff);
+}
+.orange-4 {
+    background: linear-gradient(to right, #ffffb2ff, #fecc5cff, #fd8d3cff, #f03b20ff, #bd0026ff);
+}
+.purple-4 {
+    background: linear-gradient(to right, #edf8fbff, #b3cde3ff, #8c96c6ff, #8856a7ff, #810f7cff);
+}
+.brown-1 {
+    background: linear-gradient(to right, #744d30ff, #af6b2fff, #d69253ff, #ebc39aff, #fff5e6ff);
+}
+.winter-solstice {
+    background: linear-gradient(to right, #9972b0ff, #b299d4ff, #b0bee2ff, #afd1e9ff, #d2e5f2ff);
+}
+
+@container map_legend (max-width: 250px) {
+    .mapLegend-row:has(.mapLegend-icon) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .mapLegend-header {
+        font-size: 0.875rem;
+    }
+
+    .mapLegend-colors-container {
+        height: 1.25rem;
+    }
+
+    .mapLegend {
+        &-values-container#{&}__slr-legend &-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+}

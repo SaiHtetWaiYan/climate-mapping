@@ -1,0 +1,86 @@
+:root {
+    --color-primary-lighter: #29437d;
+    --color-primary-light: #29437d;
+    --color-primary: #162e51;
+    --color-primary-dark: #162e51;
+    --color-primary-darker: #162e51;
+
+    --color-base-lightest-2: #f6f6f6;
+    --color-base-lightest: #f0f0f0;
+    --color-base-lighter: #dfe1e2;
+    --color-base-light: #a9aeb1;
+    --color-base: var(--color-primary);
+    --color-base-dark: var(--color-primary);
+    --color-base-darker: var(--color-primary);
+    --color-base-darkest: var(--color-primary);
+    --color-base-ink: var(--color-primary);
+
+    --color-secondary-lighter: #f8dfe2;
+    --color-secondary-light: #f2938c;
+    --color-secondary: #d83933;
+    --color-secondary-dark: #b50909;
+    --color-secondary-darker: #8b0a03;
+
+    --color-accent-cool-lightest: #eff9fb;
+    --color-accent-cool-lighter: #e1f3f8;
+    --color-accent-cool-light: #97d4ea;
+    --color-accent-cool: var(--color-primary);
+    --color-accent-cool-dark: var(--color-primary);
+    --color-accent-cool: var(--color-primary);
+
+    --color-warm-lighter: #f2e4d4;
+    --color-warm-light: #ffbc78;
+    --color-warm: #fa9441;
+    --color-warm-dark: #c05600;
+    --color-warm-darker: #775540;
+
+    --color-success-lighter: #ecf3ec;
+    --color-success-light: #70e17b;
+    --color-success: #00a91c;
+    --color-success-dark: #4d8055;
+    --color-success-darker: #446443;
+
+    --color-green-background: #cdefd6;
+    --color-info-background: #e7f6f8;
+
+    --color-red: var(--color-secondary);
+    --color-orange: var(--color-warm-dark);
+
+    --btn-height: 43px;
+    --btn-border-radius: 2px;
+
+    --summary-page-content-height-ratio: 65%;
+    --summary-page-content-padding: 1.5em;
+    --summary-page-indicator-header-font-size: 0.85rem;
+    --summary-page-indicator-header-padding: 0.8rem;
+    --summary-page-indicator-list-width-ratio: 0.5;
+    --summary-page-hazard-font-size: 1.3rem;
+    --summary-page-hazard-header-font-size: 1.24rem;
+    --summary-page-hazard-indicator-height: 30px;
+    --summary-page-hazard-indicator-width: 120px;
+    --summary-page-hazard-list-width: 260px;
+    --summary-page-skeleton-margin: 10px;
+
+    --explore-page-content-height: 230px;
+    --explore-page-timeframe-width: 410px;
+    --explore-page-hazard-width: 200px;
+
+    --tooltip-font-size: 15px;
+
+    --hazard-title-height: 40px;
+    --hazard-title-margin: 0.75rem;
+
+    --indicator-header-height: 40px;
+    --indicator-header-margin: 0.75rem;
+    --indicator-title-height: 40px;
+    --indicator-title-margin: 1.33rem;
+    --indicator-stats-width: 170px;
+    --indicator-timeframe-width: 220px;
+
+    --indicator-details-title-height: 40px;
+    --indicator-details-title-margin: 0.75rem;
+
+    --search-container-width: 500px;
+    --bg: #cecece;
+    --fg: var(--color-primary-darker);
+}

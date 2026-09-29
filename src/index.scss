@@ -1,0 +1,64 @@
+@use 'sass:meta';
+@use 'styles/mixin.scss';
+
+@import '@trussworks/react-uswds/lib/index.css';
+
+@include meta.load-css('styles/typography.scss');
+@include meta.load-css('styles/overwrites.scss');
+@include meta.load-css('styles/variables.scss');
+@include meta.load-css('styles/responsive.scss');
+
+html,
+body {
+    font-size: 16px;
+    color: var(--fg);
+    background-color: #fff;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-base-light) var(--color-base-lightest-2);
+}
+
+html:has(.mapPage-container:not(.hidden)),
+body:has(.mapPage-container:not(.hidden)) {
+    background-color: var(--bg);
+    scrollbar-gutter: auto;
+}
+
+::selection {
+    background: var(--color-primary);
+    color: var(--color-base-lightest);
+}
+
+*:focus {
+    outline-offset: -2px !important;
+    outline-width: 2px !important;
+    outline-color: var(--fg) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 !important;
+}
+
+a {
+    text-underline-offset: 0.5ex;
+    color: var(--color-primary);
+
+    &:hover {
+        color: var(--color-primary-light);
+    }
+}
+
+// --calcite-input-placeholder-text-color: var(--calcite-autocomplete-input-placeholder-text-color)
+// var(--calcite-autocomplete-input-actions-icon-color)
+
+// Custom properties inherit into the search component's shadow DOM
+arcgis-search,
+calcite-autocomplete {
+    --calcite-font-size--1: 1rem;
+    --calcite-color-border-input: var(--color-primary);
+}

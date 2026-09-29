@@ -1,0 +1,11 @@
+@use 'mixin';
+
+h1,
+h2,
+h3 {
+    @include mixin.title-font-family;
+}
+
+body {
+    @include mixin.body-font-family;
+}

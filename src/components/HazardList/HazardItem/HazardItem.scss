@@ -1,0 +1,27 @@
+@use '../../../styles/mixin.scss';
+
+.hazardItem {
+    img {
+        height: 32px;
+    }
+
+    &__btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    &__btn:not(.usa-button--outline) {
+        color: #fff;
+
+        &:hover {
+            cursor: not-allowed;
+            background-color: var(--color-primary);
+        }
+
+        img {
+            filter: invert(1);
+        }
+    }
+}

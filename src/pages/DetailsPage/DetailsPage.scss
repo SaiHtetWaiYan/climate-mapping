@@ -1,0 +1,67 @@
+.detailsPage {
+    &-container {
+        position: relative;
+        padding: 0 32px 32px 32px;
+        margin-block-start: 32px;
+        z-index: 10;
+
+        // TODO: @Joe make sure we don't have scroll bar issues
+        // INFO: @Gary it should be good. Haven't seen any so far (unless an accordion is open).
+        // height: 100%;
+
+        .detailsPage__header-title--mobile {
+            margin-block-start: 2rem !important;
+        }
+
+        @media screen and (min-width: 961px) {
+            .detailsPage__header-title--mobile {
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 960px) {
+            .detailsPage__header-title--desktop {
+                display: none;
+            }
+        }
+    }
+
+    &__header,
+    &__header-start {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    &__header-button {
+        width: auto;
+        padding-block: 0;
+        height: 48px;
+        padding: 0.75rem 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    &__header-start {
+        @media screen and (max-width: 960px) {
+            svg {
+                scale: 0.875;
+            }
+        }
+    }
+
+    &__header {
+        @media screen and (max-width: 650px) {
+            align-items: flex-start;
+            flex-direction: column;
+
+            * {
+                font-size: 0.875rem !important;
+            }
+        }
+    }
+}
