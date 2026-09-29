@@ -112,6 +112,12 @@ Upload the contents of `dist/` so the app is served at `/assessment-tool/`. To s
 
 Because the data is not in the repository, check that `dist/data/myanmar/townships.geojson` exists before uploading. `npm run build` copies it from `public/` only if you have built it locally.
 
+Link previews (Open Graph tags in `index.html`) use `VITE_SITE_URL` from `.env` for their absolute URLs, so set it to the site's public address. The preview image `public/og-image.png` is drawn from the township data; regenerate it after the data changes:
+
+```bash
+python3 scripts/build_og_image.py
+```
+
 Server configuration is included for Apache (`.htaccess`), IIS (`web.config`, which adds the `.geojson` MIME type) and Tomcat (`WEB-INF/rewrite.config`).
 
 To check the production build locally:
