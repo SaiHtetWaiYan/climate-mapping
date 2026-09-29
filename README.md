@@ -1,70 +1,142 @@
-# Getting Started with Create React App
+# Climate Futures Myanmar
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive map of township-level climate hazard projections for Myanmar. Choose a hazard, indicator, time period and emissions scenario to colour all townships on the map, then open any township to see its projections as a chart, table and written summary.
 
-## Available Scripts
+Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/latest/) 5.1.
 
-In the project directory, you can run:
+## Indicators
 
-### `npm start`
+| Hazard | Indicator | ID | Unit |
+|---|---|---|---|
+| Extreme heat | Hot-season days with maximum temperature above 40°C | `D40C` | days |
+| Extreme heat | Days with wet-bulb temperature above 28°C | `WBT28` | days per year |
+| Drought | Drought intensity from the 6-month Standardized Precipitation Evapotranspiration Index | `SPEI6` | SPEI (0 = no drought, more negative = more severe) |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Each indicator has values for three periods and two scenarios:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Period | Years | Scenarios |
+|---|---|---|
+| Present baseline | 1981–2010 | — |
+| Near future | 2031–2060 | SSP2-4.5, SSP5-8.5 |
+| Far future | 2071–2100 | SSP2-4.5, SSP5-8.5 |
 
-### `npm test`
+For each township, period and scenario, the app shows the 30-year **mean** and the range from the lowest (**min**) to the highest (**max**) single year.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Data
 
-### `npm run build`
+> **The township data is preliminary and unpublished, and is not included in this repository.** Do not commit or distribute it without the data owners' permission. `.gitignore` excludes `/data-build` and `public/data/myanmar/*.geojson`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The app reads a single file, `public/data/myanmar/townships.geojson`, which holds the township boundaries and every indicator value. Two scripts build it:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+Source workbooks (.xlsx, one per indicator)
+  │  scripts/build_myanmar_indicator.py
+  ▼
+data-build/myanmar/<id>.json (+ .csv)      30-year min / mean / max per township
+  │  scripts/build_myanmar_townships.py    + MIMU township boundaries
+  ▼
+public/data/myanmar/townships.geojson       the only file the app loads
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Source files you need
 
-### `npm run eject`
+- **Indicator workbooks** from the Climate Futures Myanmar modelling team. Each has one row per township (`TS_PCODE`) per model year, with the columns `Present 1981-2010`, `SSP245 2031-2060`, `SSP245 2071-2100`, `SSP585 2031-2060` and `SSP585 2071-2100`. Monthly workbooks (with a `month` column) are summed to annual totals.
+- **Township boundaries**: [MIMU Myanmar Township Boundaries v9.4](https://data.humdata.org/dataset/mimu-geonode-myanmar-township-boundaries-mimu) as GeoJSON. Check MIMU's terms before publishing.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Building the data
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Requires Python 3 with `openpyxl` and `shapely`:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+pip install openpyxl shapely
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Convert each workbook (output goes to `data-build/myanmar/`):
 
-## Learn More
+```bash
+python3 scripts/build_myanmar_indicator.py Extreme_heat_days_above_40_hot_season_Township_mean_D02.xlsx D40C
+python3 scripts/build_myanmar_indicator.py Days_exceeding_WBT28_monthly_Township_mean_D02.xlsx WBT28
+python3 scripts/build_myanmar_indicator.py SPEI6_intensity_annual_Township_mean_D02.xlsx SPEI6
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Join them to the boundaries:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+python3 scripts/build_myanmar_townships.py mmr_polbnda_adm3_250k_mimu.geojson data-build/myanmar/d40c.json data-build/myanmar/wbt28.json data-build/myanmar/spei6.json
+```
 
-### Code Splitting
+Field names in the output follow `{PERIOD}_{STAT}_{ID}`, for example `RCP85LATE_MEAN_D40C`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Period prefix | Meaning |
+|---|---|
+| `HISTORIC` | Present baseline, 1981–2010 |
+| `RCP45MID`, `RCP45LATE` | SSP2-4.5, near / far future |
+| `RCP85MID`, `RCP85LATE` | SSP5-8.5, near / far future |
 
-### Analyzing the Bundle Size
+Townships without data (for example Myeik and Cocokyun for `WBT28`) are kept on the map and show as N/A.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Development
 
-### Making a Progressive Web App
+Requires Node.js 20.19+ or 22.12+ (Vite 7).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm install
+npm run dev
+```
 
-### Advanced Configuration
+Open http://localhost:5173/assessment-tool/. The map stays empty until `public/data/myanmar/townships.geojson` exists (see [Building the data](#building-the-data)).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+If the dev server shows a blank page or `esri.Map is not a subclass of esri.Map` after installing or upgrading packages, clear Vite's dependency cache and restart:
 
-### Deployment
+```bash
+rm -rf node_modules/.vite
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Adding an indicator
 
-### `npm run build` fails to minify
+1. Convert the workbook with `build_myanmar_indicator.py`, giving it a short ID (for example `D45C`).
+2. Re-run `build_myanmar_townships.py` with all indicator files.
+3. Add an entry to `indicators` in [`src/constants/ScreeningData.js`](src/constants/ScreeningData.js) with its hazard, number format and colour scheme.
+4. Add its title, units and explanation under `Indicators` in [`src/constants/translations/enTranslation.js`](src/constants/translations/enTranslation.js).
+5. If the colour scheme is new, add its gradient to [`src/components/MapLegend/MapLegend.scss`](src/components/MapLegend/MapLegend.scss).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The dropdowns, map, legend, popup and details page pick up the new indicator automatically.
+
+## Deployment
+
+```bash
+npm run build
+```
+
+Upload the contents of `dist/` so the app is served at `/assessment-tool/`. To serve it at a different path, change `base` in [`vite.config.js`](vite.config.js) and `VITE_BASE_URL` in `.env`, then rebuild.
+
+Because the data is not in the repository, check that `dist/data/myanmar/townships.geojson` exists before uploading. `npm run build` copies it from `public/` only if you have built it locally.
+
+Server configuration is included for Apache (`.htaccess`), IIS (`web.config`, which adds the `.geojson` MIME type) and Tomcat (`WEB-INF/rewrite.config`).
+
+To check the production build locally:
+
+```bash
+npm run preview
+```
+
+Then open http://localhost:4173/assessment-tool/.
+
+### Before a public launch
+
+- **Data permission**: confirm the data owners allow publication. Anyone using the site can download `townships.geojson`.
+- **Esri API key**: the basemap and place search use Esri's online services without an API key. This is fine for testing, but production use needs an [ArcGIS Location Platform](https://developers.arcgis.com/documentation/security-and-authentication/api-key-authentication/) API key.
+
+## Project structure
+
+```
+scripts/                      data conversion scripts (Python)
+public/data/myanmar/          townships.geojson (not committed)
+src/
+  constants/ScreeningData.js  indicators, hazards, periods, scenarios
+  constants/translations/     all user-facing text
+  constants/AppConfig.js      basemap, data URL, renderer template
+  context/                    app state and map controller
+  components/                 map, controls, legend, search, indicator views
+  pages/                      map page and township details page
+```
