@@ -39,7 +39,7 @@ fi
 SOURCE_COMMIT="$(git rev-parse --short HEAD)"
 
 echo "Building $SOURCE_COMMIT for $SITE_URL"
-VITE_BASE_URL=/ VITE_SITE_URL="$SITE_URL" npx vite build --base=/ --outDir "$BUILD_DIR" --emptyOutDir
+VITE_SITE_URL="$SITE_URL" npx vite build --outDir "$BUILD_DIR" --emptyOutDir
 
 if [ ! -f "$BUILD_DIR/data/myanmar/townships.geojson" ]; then
     echo "public/data/myanmar/townships.geojson is missing." >&2

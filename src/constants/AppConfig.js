@@ -4,7 +4,7 @@ const AppConfig = {
     datasets: {
         // Built by scripts/build_myanmar_townships.py
         townships: {
-            url: `${import.meta.env.BASE_URL}/data/myanmar/townships.geojson`.replace('//data', '/data'),
+            url: `${import.meta.env.BASE_URL}data/myanmar/townships.geojson`,
         },
     },
     searchZoom: 13,

@@ -48,7 +48,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173/assessment-tool/. The map stays empty until `public/data/myanmar/townships.geojson` exists.
+Open http://localhost:5173/. The map stays empty until `public/data/myanmar/townships.geojson` exists.
 
 If the dev server shows a blank page or `esri.Map is not a subclass of esri.Map` after installing or upgrading packages, clear Vite's dependency cache and restart:
 
@@ -56,7 +56,7 @@ If the dev server shows a blank page or `esri.Map is not a subclass of esri.Map`
 rm -rf node_modules/.vite
 ```
 
-To test a production build: `npm run build && npm run preview`, then open http://localhost:4173/assessment-tool/.
+To test a production build: `npm run build && npm run preview`, then open http://localhost:4173/.
 
 ## Adding an indicator
 
@@ -88,15 +88,9 @@ Commit your changes on `main`, push, then run:
 scripts/deploy.sh --push
 ```
 
-The script builds the site for the public address, replaces the contents of the `deploy` branch with the build, commits it as `Deploy <commit>` and pushes it. It works in a separate worktree (`.deploy-worktree/`), so `main` is not touched, and it refuses to run with uncommitted changes, so every deploy matches a commit.
+The script builds the site and pushes it to the `deploy` branch. It won't run with uncommitted changes.
 
-| Option or variable | Effect |
-|---|---|
-| `--push` | Push the `deploy` branch (without it, the deploy is only committed locally) |
-| `SITE_URL=https://…` | Public address (default `https://hazards.climatefutures-mm.org`) |
-| `REMOTE=…` | Git remote to push to (default `gitlab`) |
-
-The server then picks up the new version with `git pull`, either manually or automatically (a scheduled pull or a GitLab webhook).
+On the server, run `git pull` to get the new version.
 
 ### Setting up a server (first time)
 
@@ -110,10 +104,6 @@ The server then picks up the new version with `git pull`, either manually or aut
 3. Point the domain at the web root and enable HTTPS.
 
 To update later, run `git pull` in the web root. Apache uses the included `.htaccess`; on nginx, block `/.git`.
-
-### Before a public launch
-
-Confirm the data owners allow publication: anyone using the site can download `townships.geojson`.
 
 ## Project structure
 

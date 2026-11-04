@@ -14,7 +14,7 @@ import './App.scss';
 
 const App = () => {
     const { page } = useAppContext();
-    const APP_BASE_URL = import.meta.env.VITE_base_url || import.meta.env.VITE_BASE_URL || '/';
+    const APP_BASE_URL = import.meta.env.BASE_URL;
 
     return (
         <div className="app-container">
