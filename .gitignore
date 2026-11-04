@@ -33,3 +33,6 @@ yarn-error.log*
 # and copy townships.geojson to the server when deploying.
 /data-build
 /public/data/myanmar/*.geojson
+
+# Worktree used by scripts/deploy.sh for the deploy branch
+/.deploy-worktree
