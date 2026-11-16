@@ -8,10 +8,7 @@ import numeral from 'numeral';
 import { useTranslation } from 'react-i18next';
 import { useAppContext } from '../../context/AppContextSimple';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
-import {
-    getIndicatorVisualVariable,
-    mergeAttributesWithIndicators,
-} from '../../utilities/arcgisUtils';
+import { getIndicatorVisualVariable, mergeAttributesWithIndicators } from '../../utilities/arcgisUtils';
 import { getTownshipName } from '../../utilities/geographyUtils';
 
 import AppConfig from '../../constants/AppConfig';
@@ -157,7 +154,8 @@ const AppMap = ({ basemap }) => {
         const indicator = ScreeningData.indicators.find((ind) => ind.id === selectedIndicatorId);
         if (!indicator) return 'error';
 
-        return indicator.colorRampName?.toLowerCase().replace(' ', '-') || 'orange-4';
+        const name = indicator.colorRampName?.toLowerCase().replace(' ', '-') || 'orange-4';
+        return indicator.reverseColorRamp ? `${name}-reversed` : name;
     }, [selectedIndicatorId]);
 
     useEffect(() => {
@@ -184,6 +182,7 @@ const AppMap = ({ basemap }) => {
             outFields: ['*'],
             content: (feature) => {
                 const indicator = (attr) => t(`Indicators.${selectedIndicatorId}.${attr}`);
+                const { format } = ScreeningData.indicators.find((ind) => ind.id === selectedIndicatorId);
                 const { attributes, geometry } = feature.graphic;
                 const objectIdField = dataLayerView.layer.objectIdField;
                 const div = document.createElement('div');
@@ -199,7 +198,7 @@ const AppMap = ({ basemap }) => {
                     <h2>${
                         attributes[field] === null || attributes[field] === undefined
                             ? 'N/A'
-                            : `${indicator('Prefix')} ${numeral(attributes[field]).format(indicator.format)} ${indicator(
+                            : `${indicator('Prefix')} ${numeral(attributes[field]).format(format)} ${indicator(
                                   'Postfix'
                               )}`
                     }</h2>

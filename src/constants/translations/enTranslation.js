@@ -1,3 +1,35 @@
+/**
+ * Explanation shown on the township details page. Values like {{HISTORIC_MEAN}} are filled in by the app.
+ * @param {string} intro paragraph explaining the indicator (optional)
+ * @param {string} baseline what the 1981–2010 value means, e.g. "{{geoName}} averaged {{HISTORIC_MEAN}} days ..."
+ * @param {string} unit unit after each projected value, e.g. "days per year" (optional)
+ */
+const projectionText = ({ intro, baseline, unit }) => {
+    const u = unit ? ` ${unit}` : '';
+    return `${intro ? `${intro}\n\n` : ''}For the 30 years from 1981 to 2010, models estimate that ${baseline}.
+
+Under a moderate emissions scenario (SSP2-4.5), models project an average of:
+
+-   {{RCP45MID_MEAN}}${u} in the near future, from 2031 to 2060; and
+-   {{RCP45LATE_MEAN}}${u} in the far future, from 2071 to 2100.
+
+Under a high emissions scenario (SSP5-8.5), models project an average of:
+
+-   {{RCP85MID_MEAN}}${u} in the near future, from 2031 to 2060; and
+-   {{RCP85LATE_MEAN}}${u} in the far future, from 2071 to 2100.
+
+All values are 30-year averages.
+
+Source: Climate Futures Myanmar township projections.`;
+};
+
+const WET_BULB_INTRO =
+    'Wet-bulb temperature combines heat and humidity. Above about 28°C the body struggles to cool itself by sweating, causing serious physiological strain, including heat stress injuries, cardiovascular events and kidney damage. The theoretical limit for human survival is about 31°C.';
+const SPEI_INTRO = (months) =>
+    `The Standardized Precipitation Evapotranspiration Index (SPEI) measures the difference between water supply (rainfall) and water demand (evaporation from land and plants). SPEI-${months} looks at drought conditions over ${months} months. A value of 0 means no drought; the more negative the value, the more intense the drought.`;
+const SPI_INTRO = (months) =>
+    `The Standardized Precipitation Index (SPI) compares rainfall with the long-term normal. SPI-${months} looks at rainfall over ${months} months. A value of 0 means normal rainfall; the more negative the value, the more intense the drought.`;
+
 const enTranslation = {
     App: {
         Title: 'Climate Mapping',
@@ -58,6 +90,7 @@ const enTranslation = {
         },
         ClearBtn: 'Clear Selection',
         SearchTitle: 'Find a Myanmar township',
+        MobileToggle: 'Search and filters',
         CloseBtn: {
             Close: 'Clear selected area',
         },
@@ -68,8 +101,8 @@ const enTranslation = {
     Data: {
         Time: {
             HISTORIC: {
-                LongLabel: 'Present Baseline (1981–2010)',
-                Label: 'Present Baseline',
+                LongLabel: 'Historical (1981–2010)',
+                Label: 'Historical',
                 Years: '1981–2010',
             },
             MID: {
@@ -82,10 +115,7 @@ const enTranslation = {
             },
         },
         Stats: {
-            MAX: 'Maximum',
             MEAN: 'Mean',
-            MIN: 'Minimum',
-            PROJECTION: 'Projection',
         },
         Models: {
             RCP45: {
@@ -101,20 +131,17 @@ const enTranslation = {
         },
     },
     Hazards: {
-        drought: {
-            Title: 'Drought',
-        },
         extreme_temperature: {
             Title: 'Extreme Heat',
         },
-        fire: {
-            Title: 'Wildfire',
+        humid_heat: {
+            Title: 'Wet Bulb Temperature',
+        },
+        drought: {
+            Title: 'Drought',
         },
         flooding_inland: {
-            Title: 'Flooding',
-        },
-        flooding_costal: {
-            Title: 'Coastal Inundation',
+            Title: 'Flood',
         },
     },
     Indicators: {
@@ -123,69 +150,148 @@ const enTranslation = {
             Details: 'Number of days in the hot season when the daily maximum temperature exceeds 40°C',
             Prefix: '',
             Postfix: 'Days',
-            LongText: `For the 30 years from 1981 to 2010, models estimate that {{geoName}} averaged {{HISTORIC_MEAN}} days per hot season when the highest temperature of the day exceeded 40°C.
-
-Under a moderate emissions scenario (SSP2-4.5), models project an average of:
-
--   {{RCP45MID_MEAN}} days per hot season in the near future, from 2031 to 2060; and
--   {{RCP45LATE_MEAN}} days per hot season in the far future, from 2071 to 2100\.
-
-Under a high emissions scenario (SSP5-8.5), models project an average of:
-
--   {{RCP85MID_MEAN}} days per hot season in the near future, from 2031 to 2060; and
--   {{RCP85LATE_MEAN}} days per hot season in the far future, from 2071 to 2100\.
-
-Note that this interpretation shows 30-year averages. The Chart and Table tabs show the range from the lowest to the highest single year in each 30-year period.
-
-Source: Climate Futures Myanmar, preliminary township projections.`,
+            LongText: projectionText({
+                baseline:
+                    '{{geoName}} averaged {{HISTORIC_MEAN}} days per hot season when the highest temperature of the day exceeded 40°C',
+                unit: 'days per hot season',
+            }),
+        },
+        D45C: {
+            Title: 'Hot-season days with maximum temperature > 45°C',
+            Details: 'Number of days in the hot season when the daily maximum temperature exceeds 45°C',
+            Prefix: '',
+            Postfix: 'Days',
+            LongText: projectionText({
+                baseline:
+                    '{{geoName}} averaged {{HISTORIC_MEAN}} days per hot season when the highest temperature of the day exceeded 45°C',
+                unit: 'days per hot season',
+            }),
+        },
+        WBT25: {
+            Title: 'Days with wet-bulb temperature > 25°C',
+            Details: 'Number of days per year when the daily wet-bulb temperature exceeds 25°C',
+            Prefix: '',
+            Postfix: 'Days',
+            LongText: projectionText({
+                intro: WET_BULB_INTRO,
+                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} days per year with a wet-bulb temperature above 25°C',
+                unit: 'days per year',
+            }),
         },
         WBT28: {
             Title: 'Days with wet-bulb temperature > 28°C',
             Details: 'Number of days per year when the daily wet-bulb temperature exceeds 28°C',
             Prefix: '',
             Postfix: 'Days',
-            LongText: `Wet-bulb temperature combines heat and humidity. Above about 28°C the body struggles to cool itself by sweating, causing serious physiological strain, including heat stress injuries, cardiovascular events and kidney damage. The theoretical limit for human survival is about 31°C.
-
-For the 30 years from 1981 to 2010, models estimate that {{geoName}} averaged {{HISTORIC_MEAN}} days per year with a wet-bulb temperature above 28°C.
-
-Under a moderate emissions scenario (SSP2-4.5), models project an average of:
-
--   {{RCP45MID_MEAN}} days per year in the near future, from 2031 to 2060; and
--   {{RCP45LATE_MEAN}} days per year in the far future, from 2071 to 2100\.
-
-Under a high emissions scenario (SSP5-8.5), models project an average of:
-
--   {{RCP85MID_MEAN}} days per year in the near future, from 2031 to 2060; and
--   {{RCP85LATE_MEAN}} days per year in the far future, from 2071 to 2100\.
-
-Most of these days fall between May and September, peaking in June with the onset of the southwest monsoon.
-
-Note that this interpretation shows 30-year averages. The Chart and Table tabs show the range from the lowest to the highest single year in each 30-year period.
-
-Source: Climate Futures Myanmar, preliminary township projections.`,
+            LongText: projectionText({
+                intro: WET_BULB_INTRO,
+                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} days per year with a wet-bulb temperature above 28°C',
+                unit: 'days per year',
+            }),
+        },
+        WBT31: {
+            Title: 'Days with wet-bulb temperature > 31°C',
+            Details: 'Number of days per year when the daily wet-bulb temperature exceeds 31°C',
+            Prefix: '',
+            Postfix: 'Days',
+            LongText: projectionText({
+                intro: WET_BULB_INTRO,
+                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} days per year with a wet-bulb temperature above 31°C',
+                unit: 'days per year',
+            }),
+        },
+        DRY: {
+            Title: 'Dry days',
+            Details: 'Number of dry days per year',
+            Prefix: '',
+            Postfix: 'Days',
+            LongText: projectionText({
+                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} dry days per year',
+                unit: 'dry days per year',
+            }),
+        },
+        SPEI3: {
+            Title: 'Drought intensity (SPEI-3)',
+            Details: 'Drought intensity from the 3-month Standardized Precipitation Evapotranspiration Index',
+            Prefix: '',
+            Postfix: 'SPEI',
+            LongText: projectionText({
+                intro: SPEI_INTRO(3),
+                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
+            }),
         },
         SPEI6: {
             Title: 'Drought intensity (SPEI-6)',
-            Details: 'Annual drought intensity from the 6-month Standardized Precipitation Evapotranspiration Index',
+            Details: 'Drought intensity from the 6-month Standardized Precipitation Evapotranspiration Index',
             Prefix: '',
             Postfix: 'SPEI',
-            LongText: `The Standardized Precipitation Evapotranspiration Index (SPEI) measures the difference between water supply (rainfall) and water demand (evaporation from land and plants). SPEI-6 looks at drought conditions over 6 months. A value of 0 means no drought; the more negative the value, the more intense the drought.
-
-For the 30 years from 1981 to 2010, models estimate an average annual drought intensity of {{HISTORIC_MEAN}} for {{geoName}}.
-
-Under a moderate emissions scenario (SSP2-4.5), models project an average of:
-
--   {{RCP45MID_MEAN}} in the near future, from 2031 to 2060; and
--   {{RCP45LATE_MEAN}} in the far future, from 2071 to 2100\.
-
-Under a high emissions scenario (SSP5-8.5), models project an average of:
-
--   {{RCP85MID_MEAN}} in the near future, from 2031 to 2060; and
--   {{RCP85LATE_MEAN}} in the far future, from 2071 to 2100\.
-
-Note that this interpretation shows 30-year averages. The Chart and Table tabs show the range from the most to the least intense single year in each 30-year period.
-
-Source: Climate Futures Myanmar, preliminary township projections.`,
+            LongText: projectionText({
+                intro: SPEI_INTRO(6),
+                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
+            }),
+        },
+        SPEI12: {
+            Title: 'Drought intensity (SPEI-12)',
+            Details: 'Drought intensity from the 12-month Standardized Precipitation Evapotranspiration Index',
+            Prefix: '',
+            Postfix: 'SPEI',
+            LongText: projectionText({
+                intro: SPEI_INTRO(12),
+                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
+            }),
+        },
+        SPI3: {
+            Title: 'Drought intensity (SPI-3)',
+            Details: 'Drought intensity from the 3-month Standardized Precipitation Index',
+            Prefix: '',
+            Postfix: 'SPI',
+            LongText: projectionText({
+                intro: SPI_INTRO(3),
+                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
+            }),
+        },
+        SPI6: {
+            Title: 'Drought intensity (SPI-6)',
+            Details: 'Drought intensity from the 6-month Standardized Precipitation Index',
+            Prefix: '',
+            Postfix: 'SPI',
+            LongText: projectionText({
+                intro: SPI_INTRO(6),
+                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
+            }),
+        },
+        SPI12: {
+            Title: 'Drought intensity (SPI-12)',
+            Details: 'Drought intensity from the 12-month Standardized Precipitation Index',
+            Prefix: '',
+            Postfix: 'SPI',
+            LongText: projectionText({
+                intro: SPI_INTRO(12),
+                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
+            }),
+        },
+        RR50: {
+            Title: 'Days with more than 50 mm of rain',
+            Details: 'Number of days per year with more than 50 mm of rain',
+            Prefix: '',
+            Postfix: 'Days',
+            LongText: projectionText({
+                intro: 'Days with very heavy rain can cause flash floods and landslides.',
+                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} days per year with more than 50 mm of rain',
+                unit: 'days per year',
+            }),
+        },
+        CWD: {
+            Title: 'Longest run of wet days',
+            Details: 'Longest run of consecutive wet days per year',
+            Prefix: '',
+            Postfix: 'Days',
+            LongText: projectionText({
+                intro: 'Long wet spells saturate the soil and raise the risk of river flooding.',
+                baseline:
+                    'the longest run of consecutive wet days in {{geoName}} averaged {{HISTORIC_MEAN}} days per year',
+                unit: 'days',
+            }),
         },
     },
 };

@@ -27,10 +27,21 @@ const MapControls = () => {
     const [t] = useTranslation();
     const [infoAlertOpen, setInfoAlertOpen] = React.useState(false);
     const [mapControls, setShowMapControls] = React.useState(true);
+    // Small screens only: the panel starts closed so the map is visible
+    const [mobileOpen, setMobileOpen] = React.useState(false);
     const { areaOfInterestInfo, setPage, selectedIndicatorId, updateSearchResult } = useAppContext();
 
     return (
-        <div className="mapControls-container">
+        <div className={`mapControls-container ${mobileOpen ? 'mobile-open' : ''}`}>
+            <button
+                type="button"
+                className="mapControls__mobile-toggle"
+                aria-expanded={mobileOpen}
+                onClick={() => setMobileOpen(!mobileOpen)}
+            >
+                <span>{t('MapControls.MobileToggle')}</span>
+                {mobileOpen ? <Icon.ExpandMore size={3} /> : <Icon.ExpandLess size={3} />}
+            </button>
             <div className="mapControls__inner">
                 <Alert className="mapControls__inner-alert" type="info" headingLevel="h2">
                     <Button

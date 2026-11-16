@@ -28,11 +28,8 @@ yarn-error.log*
 # VSCode
 .vscode
 
-# Climate Futures Myanmar data: preliminary and unpublished, do not distribute.
-# Regenerate with scripts/build_myanmar_indicator.py and scripts/build_myanmar_townships.py,
-# and copy townships.geojson to the server when deploying.
-/data-build
-/public/data/myanmar/*.geojson
-
 # Worktree used by scripts/deploy.sh for the deploy branch
 /.deploy-worktree
+
+# Old local data build output (now loaded from the API)
+/data-build

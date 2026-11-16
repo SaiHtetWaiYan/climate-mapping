@@ -41,11 +41,6 @@ SOURCE_COMMIT="$(git rev-parse --short HEAD)"
 echo "Building $SOURCE_COMMIT for $SITE_URL"
 VITE_SITE_URL="$SITE_URL" npx vite build --outDir "$BUILD_DIR" --emptyOutDir
 
-if [ ! -f "$BUILD_DIR/data/myanmar/townships.geojson" ]; then
-    echo "public/data/myanmar/townships.geojson is missing." >&2
-    exit 1
-fi
-
 # Check out the deploy branch in its own worktree, creating it if needed
 git fetch --quiet "$REMOTE" "$BRANCH" 2>/dev/null || true
 if [ ! -d "$WORKTREE" ]; then

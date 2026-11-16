@@ -2,9 +2,16 @@ const AppConfig = {
     // Esri light gray canvas basemap
     basemap: 'gray-vector',
     datasets: {
-        // Built by scripts/build_myanmar_townships.py
-        townships: {
-            url: `${import.meta.env.BASE_URL}data/myanmar/townships.geojson`,
+        // Township boundaries and indicator values (Climate Futures Myanmar, CDE)
+        climateHazards: {
+            url: 'https://gis.cde.unibe.ch/gis/rest/services/Hosted/climate_hazard/FeatureServer/0',
+            // Simplify the boundaries (degrees, about 200 m) to keep the download small
+            maxAllowableOffset: 0.002,
+            geometryPrecision: 4,
+        },
+        // Township and region names by TS_PCODE (MIMU), which the API doesn't include
+        townshipNames: {
+            url: `${import.meta.env.BASE_URL}data/myanmar/township-names.json`,
         },
     },
     searchZoom: 13,

@@ -34,12 +34,14 @@ const HazardItem = ({ hazardId }) => {
         switch (hazardId) {
             case 'extreme_temperature':
                 return <img src={ExtremeTemperatureIcon} alt="Extreme Temperature Icon" />;
+            case 'humid_heat':
+                return <img src={ExtremeTemperatureIcon} alt="Wet Bulb Temperature Icon" />;
             case 'drought':
                 return <img src={DroughtIcon} alt="Drought Icon" />;
             case 'fire':
                 return <img src={FireIcon} alt="Fire Icon" />;
             case 'flooding_inland':
-                return <img src={FloodingInlandIcon} alt="Inland Flooding Icon" />;
+                return <img src={FloodingInlandIcon} alt="Flood Icon" />;
             case 'flooding_costal':
                 return <img src={FloodingCostalIcon} alt="Costal Flooding Icon" />;
             // no default

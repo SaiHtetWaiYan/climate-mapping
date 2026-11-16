@@ -26,44 +26,60 @@ import MapSymbols from '../../constants/MapSymbols';
 //     getPaddingLeft(left);
 // });
 
+// Small screens show the filters as a bar at the bottom and the legend at the top;
+// larger screens show the filters as a panel on the left (280px wide up to 960px, see MapControls.scss)
+const smallScreen = window.matchMedia('(max-width: 720px)');
+const mediumScreen = window.matchMedia('(max-width: 960px)');
+const getViewPadding = () => {
+    if (smallScreen.matches) return { top: 80, bottom: 72 };
+    if (mediumScreen.matches) return { left: 320 };
+    return { left: 480 };
+};
+
 export function loadView(basemap, options) {
     const map = new Map({ basemap });
     const { view } = options;
+    const mapView = new MapView({
+        ...view,
+        map,
+        padding: getViewPadding(),
+        popup: {
+            dockOptions: {
+                // Disable the dock button so users cannot undock the popup
+                buttonEnabled: false,
+            },
+        },
+        highlights: [
+            {
+                name: 'default',
+                color: 'cyan',
+                haloOpacity: 1,
+                fillOpacity: 0.25,
+                shadowColor: 'black',
+                shadowOpacity: 0.4,
+                shadowDifference: 0.2,
+            },
+            {
+                name: 'aoi',
+                color: [27, 27, 27, 255],
+                haloOpacity: 1,
+                fillOpacity: 0,
+                shadowColor: 'black',
+                shadowOpacity: 0.4,
+                shadowDifference: 0.2,
+            },
+        ],
+        constraints: {
+            maxZoom: 17,
+        },
+    });
+    [smallScreen, mediumScreen].forEach((query) =>
+        query.addEventListener('change', () => {
+            mapView.padding = getViewPadding();
+        })
+    );
     return {
-        view: new MapView({
-            ...view,
-            map,
-            padding: { left: 480 },
-            popup: {
-                dockOptions: {
-                    // Disable the dock button so users cannot undock the popup
-                    buttonEnabled: false,
-                },
-            },
-            highlights: [
-                {
-                    name: 'default',
-                    color: 'cyan',
-                    haloOpacity: 1,
-                    fillOpacity: 0.25,
-                    shadowColor: 'black',
-                    shadowOpacity: 0.4,
-                    shadowDifference: 0.2,
-                },
-                {
-                    name: 'aoi',
-                    color: [27, 27, 27, 255],
-                    haloOpacity: 1,
-                    fillOpacity: 0,
-                    shadowColor: 'black',
-                    shadowOpacity: 0.4,
-                    shadowDifference: 0.2,
-                },
-            ],
-            constraints: {
-                maxZoom: 17,
-            },
-        }),
+        view: mapView,
         map,
     };
 }

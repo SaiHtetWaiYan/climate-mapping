@@ -4,13 +4,14 @@ import MapSymbols from '../constants/MapSymbols';
 import ScreeningData from '../constants/ScreeningData';
 import { getIndicatorData, unionExtents } from '../utilities/arcgisUtils';
 import { getTownshipName } from '../utilities/geographyUtils';
+import { loadTownshipsGeoJSON } from '../utilities/townshipData';
 import { emptyAreaOfInterestInfo } from './AppContextSimple';
 
 const _updateMapView = async (args, setter) => {
     const { mapView, setDataLayerView, setTownshipsLayerView } = args;
 
     const townshipsLayer = new GeoJSONLayer({
-        url: AppConfig.datasets.townships.url,
+        url: await loadTownshipsGeoJSON(),
         renderer: MapSymbols.emptyRenderer,
         visible: false,
         outFields: ['*'],
@@ -36,9 +37,7 @@ const _updateSelectedHazard = async (args, setter) => {
     const selectedIndicator = indicators.find((indicator) => indicator.id === selectedIndicatorId);
 
     if (!selectedIndicator || !selectedIndicator[value]) {
-        const firstIndicator = indicators
-            .sort((a, b) => a[value] - b[value])
-            .find((indicator) => indicator[value]);
+        const firstIndicator = indicators.sort((a, b) => a[value] - b[value]).find((indicator) => indicator[value]);
         if (firstIndicator) {
             setSelectedIndicatorId(firstIndicator.id);
         }

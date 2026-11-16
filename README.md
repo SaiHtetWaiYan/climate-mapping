@@ -9,35 +9,28 @@ Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://devel
 
 ## Indicators
 
-| Hazard | Indicator | ID | Unit |
-|---|---|---|---|
-| Extreme heat | Hot-season days with maximum temperature above 40°C | `D40C` | days |
-| Extreme heat | Days with wet-bulb temperature above 28°C | `WBT28` | days per year |
-| Drought | Drought intensity from the 6-month Standardized Precipitation Evapotranspiration Index | `SPEI6` | SPEI (0 = no drought, more negative = more severe) |
+| Hazard | Indicators |
+|---|---|
+| Extreme heat | Hot-season days above 40°C and 45°C |
+| Wet bulb temperature | Days with wet-bulb temperature above 25°C, 28°C and 31°C |
+| Drought | Drought intensity (SPEI-3/6/12 and SPI-3/6/12) |
+| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain |
 
 Each indicator has values for three periods and two scenarios:
 
 | Period | Years | Scenarios |
 |---|---|---|
-| Present baseline | 1981–2010 | — |
+| Historical | 1981–2010 | — |
 | Near future | 2031–2060 | SSP2-4.5, SSP5-8.5 |
 | Far future | 2071–2100 | SSP2-4.5, SSP5-8.5 |
 
-For each township, period and scenario, the app shows the 30-year **mean** and the range from the lowest (**min**) to the highest (**max**) single year.
+For each township, period and scenario, the app shows the 30-year average.
 
 ## Data
 
-> **The data is preliminary and unpublished.** It is kept out of `main` and included only in the `deploy` branch. Do not distribute it without the data owners' permission.
+The browser loads the township boundaries and indicator values from the [climate hazard API](https://gis.cde.unibe.ch/gis/rest/services/Hosted/climate_hazard/FeatureServer/0) (ArcGIS FeatureServer, CDE). The API has no township names, so they come from `public/data/myanmar/township-names.json` (MIMU), matched by `TS_PCODE`.
 
-The app reads `public/data/myanmar/townships.geojson`: one feature per township, with fields named `{PERIOD}_{STAT}_{ID}`, for example `RCP85LATE_MEAN_D40C`.
-
-| Period prefix | Meaning |
-|---|---|
-| `HISTORIC` | Present baseline, 1981–2010 |
-| `RCP45MID`, `RCP45LATE` | SSP2-4.5, near / far future |
-| `RCP85MID`, `RCP85LATE` | SSP5-8.5, near / far future |
-
-Townships without a value show as N/A.
+API fields are named `{indicator}_{period}`, for example `Extreme_heat_days_above_40_hot_season_SSP585_2071_2100`. Townships without a value show as N/A.
 
 ## Development
 
@@ -48,7 +41,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173/. The map stays empty until `public/data/myanmar/townships.geojson` exists.
+Open http://localhost:5173/.
 
 If the dev server shows a blank page or `esri.Map is not a subclass of esri.Map` after installing or upgrading packages, clear Vite's dependency cache and restart:
 
@@ -60,10 +53,9 @@ To test a production build: `npm run build && npm run preview`, then open http:/
 
 ## Adding an indicator
 
-1. Add its values to the data, using a short ID (for example `D45C`).
-2. Add an entry to `indicators` in [`src/constants/ScreeningData.js`](src/constants/ScreeningData.js) with its hazard, number format and colour scheme.
-3. Add its title, units and explanation under `Indicators` in [`src/constants/translations/enTranslation.js`](src/constants/translations/enTranslation.js).
-4. If the colour scheme is new, add its gradient to [`src/components/MapLegend/MapLegend.scss`](src/components/MapLegend/MapLegend.scss).
+1. Add an entry to `indicators` in [`src/constants/ScreeningData.js`](src/constants/ScreeningData.js) with a short ID, its API field name without the period (`source`), its hazard, number format and colour scheme.
+2. Add its title, units and explanation under `Indicators` in [`src/constants/translations/enTranslation.js`](src/constants/translations/enTranslation.js).
+3. If the colour scheme is new, add its gradient to [`src/components/MapLegend/MapLegend.scss`](src/components/MapLegend/MapLegend.scss).
 
 The dropdowns, map, legend, popup and details page pick up the new indicator automatically.
 
@@ -112,11 +104,12 @@ scripts/
   deploy.sh                   build onto the deploy branch
 public/
   .htaccess                   Apache settings (blocks /.git, MIME type, caching)
-  data/myanmar/               townships.geojson (not committed)
+  data/myanmar/               township names by code
 src/
   constants/ScreeningData.js  indicators, hazards, periods, scenarios
   constants/translations/     all user-facing text
-  constants/AppConfig.js      basemap, data URL, renderer template
+  constants/AppConfig.js      basemap, API URL, renderer template
+  utilities/townshipData.js   loads the townships from the API
   context/                    app state and map controller
   components/                 map, controls, legend, search, indicator views
   pages/                      map page and township details page

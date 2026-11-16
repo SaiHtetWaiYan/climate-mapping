@@ -217,3 +217,52 @@
         }
     }
 }
+
+// Small screens: the panel is a bar at the bottom that opens upwards
+.mapControls__mobile-toggle {
+    display: none;
+}
+
+@media screen and (max-width: 720px) {
+    .mapControls {
+        &-container {
+            inset-block: auto 18px;
+            inset-inline: 0;
+            height: auto !important;
+            max-height: 60%;
+            display: flex;
+            flex-direction: column;
+            border-inline: none;
+            background: #fff;
+        }
+
+        &__mobile-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        &-container:not(.mobile-open) &__inner {
+            display: none;
+        }
+
+        &__inner {
+            width: 100%;
+            padding: 1rem;
+        }
+
+        // The welcome text takes too much room on a phone
+        &__inner-alert {
+            display: none;
+        }
+    }
+}

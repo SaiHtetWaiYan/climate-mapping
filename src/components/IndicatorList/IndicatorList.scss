@@ -149,3 +149,31 @@
         }
     }
 }
+
+// Small screens: period dropdown on its own row, scenario columns below it
+@media screen and (max-width: 720px) {
+    .indicatorList {
+        &-header-container {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        &-header-container--start,
+        &-header-container--end {
+            width: 100%;
+
+            & select {
+                width: 100%;
+            }
+        }
+
+        &-header-container--end {
+            padding: 0 !important;
+            font-size: 0.875rem;
+
+            & > div {
+                width: 50%;
+            }
+        }
+    }
+}

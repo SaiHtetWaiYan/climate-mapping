@@ -30,19 +30,11 @@ const IndicatorTable = ({ selectedIndicator }) => {
                     {/* Header cells */}
                     <div className="indicatorDetails-item-row indicatorDetails-item-row-header">
                         <div className="indicatorDetails-item-row-item" key="empty"></div>
-                        <div className="indicatorDetails-item-row-item" key="min">
-                            <span className="font-sans-3xs text-base">{t('Data.Stats.MIN')}</span>
-                            <span className="font-sans-4xs text-base">{t(`Data.Stats.PROJECTION`)}</span>
-                        </div>
                         <div className="indicatorDetails-item-row-item" key="mean">
                             <span className="font-sans-3xs text-base">{t('Data.Stats.MEAN')}</span>
                             <span className="font-sans-4xs text-base">
                                 ({t(`Indicators.${selectedIndicator.id}.Postfix`)})
                             </span>
-                        </div>
-                        <div className="indicatorDetails-item-row-item" key="max">
-                            <span className="font-sans-3xs text-base">{t('Data.Stats.MAX')}</span>
-                            <span className="font-sans-4xs text-base">{t(`Data.Stats.PROJECTION`)}</span>
                         </div>
                     </div>
                     {/* Data Cells */}
@@ -56,30 +48,14 @@ const IndicatorTable = ({ selectedIndicator }) => {
                                     className="indicatorDetails-item-row-item font-sans-3xs text-base-darker indicatorDetails-item-row-item-header"
                                     key={timeframe + '-label'}
                                 >
-                                    <div key="timeframe-label">
-                                        {t(`Data.Time.${timeframe}.Label`)}
-                                    </div>
-                                    <div key="timeframe-years">
-                                        ({t(`Data.Time.${timeframe}.Years`)})
-                                    </div>
-                                </div>
-                                <div
-                                    className="indicatorDetails-item-row-item text-ink font-sans-md"
-                                    key={timeframe + '-min'}
-                                >
-                                    {indicatorKeyToString(selectedIndicator, modelTimeframe + '_MIN')}
+                                    <div key="timeframe-label">{t(`Data.Time.${timeframe}.Label`)}</div>
+                                    <div key="timeframe-years">({t(`Data.Time.${timeframe}.Years`)})</div>
                                 </div>
                                 <div
                                     className="indicatorDetails-item-row-item text-ink font-sans-2lg"
                                     key={timeframe + '-mean'}
                                 >
                                     {indicatorKeyToString(selectedIndicator, modelTimeframe + '_MEAN')}
-                                </div>
-                                <div
-                                    className="indicatorDetails-item-row-item text-ink font-sans-md"
-                                    key={timeframe + '-max'}
-                                >
-                                    {indicatorKeyToString(selectedIndicator, modelTimeframe + '_MAX')}
                                 </div>
                             </div>
                         );

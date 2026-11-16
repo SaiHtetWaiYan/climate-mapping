@@ -125,6 +125,9 @@ span.gray-slr {
 .brown-1 {
     background: linear-gradient(to right, #744d30ff, #af6b2fff, #d69253ff, #ebc39aff, #fff5e6ff);
 }
+.brown-1-reversed {
+    background: linear-gradient(to left, #744d30ff, #af6b2fff, #d69253ff, #ebc39aff, #fff5e6ff);
+}
 .winter-solstice {
     background: linear-gradient(to right, #9972b0ff, #b299d4ff, #b0bee2ff, #afd1e9ff, #d2e5f2ff);
 }
@@ -147,5 +150,32 @@ span.gray-slr {
             flex-direction: column;
             align-items: flex-start;
         }
+    }
+}
+
+// Small screens: a compact legend at the top, clear of the filter bar
+@media screen and (max-width: 720px) {
+    .mapLegend-container {
+        inset-block: 0.75rem auto;
+        inset-inline-end: 0.75rem;
+        width: min(220px, calc(100% - 4.5rem));
+        padding: 0.5rem 0.75rem;
+        gap: 2px;
+    }
+
+    .mapLegend-row:has(.mapLegend-icon) {
+        margin-block-end: 0.25rem;
+    }
+
+    .mapLegend-icon {
+        display: none;
+    }
+
+    .mapLegend-header {
+        font-size: 0.8rem;
+    }
+
+    .mapLegend-colors-container {
+        height: 0.75rem;
     }
 }
