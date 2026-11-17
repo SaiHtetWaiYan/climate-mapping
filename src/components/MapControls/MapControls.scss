@@ -6,16 +6,8 @@
         position: absolute;
         inset-block-start: 24px;
         inset-inline-start: 32px;
-
-        @media screen and (max-height: 1120px) {
-            height: calc(100% - (24px * 2));
-        }
-    }
-
-    :has(#{&}__inner-controls:not(.active)) &-container {
-        @media screen and (max-height: 1120px) {
-            height: auto;
-        }
+        // Fit the content, scrolling only when it is taller than the map
+        max-height: calc(100% - (24px * 2));
     }
 
     &__search-title {
