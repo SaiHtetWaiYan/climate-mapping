@@ -398,3 +398,9 @@ ul {
     font-family: 'Public Sans', Helvetica, Arial, sans-serif;
 }
 /*#endregion misc */
+
+// ArcGIS frames the map whenever it has focus, including after a mouse click or drag;
+// keep the frame only for keyboard users
+.esri-view .esri-view-surface:focus:not(:focus-visible)::after {
+    outline: none;
+}
