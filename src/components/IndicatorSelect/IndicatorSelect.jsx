@@ -38,7 +38,6 @@ const IndicatorSelect = () => {
                 value={selectedIndicatorId || ''}
                 onChange={(event) => {
                     if (event?.target?.value) {
-                        console.log('IndicatorSelect onChange value:', event.target.value);
                         setSelectedIndicatorId(event?.target?.value);
                     }
                 }}

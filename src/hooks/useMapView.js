@@ -20,7 +20,8 @@ export function useMapView(basemap, options = {}) {
             const { basemap, options } = initialArguments.current;
             const loadViewResults = loadView(basemap, options);
             _view = loadViewResults.view;
-            _view.ui.move('zoom', 'bottom-left');
+            // Zoom with the mouse wheel or pinch; the zoom buttons sat behind the side panel
+            _view.ui.remove('zoom');
             if (cancelled) {
                 return;
             }

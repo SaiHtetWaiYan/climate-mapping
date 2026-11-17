@@ -31,7 +31,7 @@ const DetailsPage = () => {
                             setPage(AppRoutes.mapPage);
                         }}
                     >
-                        <Icon.ArrowBack className="detailsPage__header-start-icon" size={2} />
+                        <Icon.ArrowBack aria-hidden className="detailsPage__header-start-icon" size={2} />
                         {t('App.BackButtonText')}
                     </Button>
                     <h2 className="detailsPage__header-title--desktop">{areaOfInterestInfo.geoName}</h2>

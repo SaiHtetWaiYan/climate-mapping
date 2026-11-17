@@ -119,7 +119,6 @@ export const AppContextProvider = ({ children }) => {
             const handle = townshipsLayerView?.highlight(areaOfInterestInfo.oid, { name: 'aoi' });
             updateHighlightHandle(handle);
         } else {
-            console.log;
             updateHighlightHandle(null);
         }
     }, [areaOfInterestInfo, townshipsLayerView]);

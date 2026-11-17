@@ -114,7 +114,6 @@ const AppMap = ({ basemap }) => {
             const renderer = { ...rendererTemplate, field: indicatorFieldName };
             // add color visual variable for selcted indicator
             renderer.visualVariables.push({ ...visualVariable, field: indicatorFieldName });
-            console.log('renderer', renderer);
             setRendererJSON(renderer);
             clearTimeout(timeoutId);
             setShowMapLoading(false);

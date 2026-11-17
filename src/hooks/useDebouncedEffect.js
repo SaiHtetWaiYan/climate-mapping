@@ -16,7 +16,6 @@ export const useDebouncedEffect = (
     const makeChangeTodependency = useCallback(
         debounce(
             (dependency) => {
-                console.log('runnign makeChangeTodependency', dependency);
                 _setdependency(dependency);
             },
             timeout,

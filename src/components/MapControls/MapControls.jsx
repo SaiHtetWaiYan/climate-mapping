@@ -40,7 +40,7 @@ const MapControls = () => {
                 onClick={() => setMobileOpen(!mobileOpen)}
             >
                 <span>{t('MapControls.MobileToggle')}</span>
-                {mobileOpen ? <Icon.ExpandMore size={3} /> : <Icon.ExpandLess size={3} />}
+                {mobileOpen ? <Icon.ExpandMore aria-hidden size={3} /> : <Icon.ExpandLess aria-hidden size={3} />}
             </button>
             <div className="mapControls__inner">
                 <Alert className="mapControls__inner-alert" type="info" headingLevel="h2">
@@ -52,7 +52,7 @@ const MapControls = () => {
                         className="mapControls__alert-button"
                         aria-label={t('MapControls.WelcomeIntro.ButtonClose')}
                     >
-                        <Icon.Close className="mapControls__alert-close" />
+                        <Icon.Close aria-hidden className="mapControls__alert-close" />
                     </Button>
                     <span>
                         <strong>{t('MapControls.WelcomeIntro.Title')}</strong>
@@ -81,9 +81,9 @@ const MapControls = () => {
                                     }
                                 >
                                     {mapControls ? (
-                                        <Icon.UnfoldLess size={3} className="mapControls__minimize-icon" />
+                                        <Icon.UnfoldLess aria-hidden size={3} className="mapControls__minimize-icon" />
                                     ) : (
-                                        <Icon.UnfoldMore size={3} className="mapControls__minimize-icon" />
+                                        <Icon.UnfoldMore aria-hidden size={3} className="mapControls__minimize-icon" />
                                     )}
                                 </Button>
                                 <Button
@@ -94,7 +94,7 @@ const MapControls = () => {
                                     className="mapControls__close-button "
                                     aria-label={t('MapControls.ClearBtn')}
                                 >
-                                    <Icon.Close size={3} className="mapControls__close-icon" />
+                                    <Icon.Close aria-hidden size={3} className="mapControls__close-icon" />
                                 </Button>
                             </div>
                         </div>
