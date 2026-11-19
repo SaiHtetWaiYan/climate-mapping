@@ -4,11 +4,7 @@ import { useTranslation } from 'react-i18next';
 import ScreeningData from '../constants/ScreeningData';
 
 // Setter Functions
-import {
-    _updateAreaOfInterestInfo,
-    _updateMapView,
-    _updateSelectedHazard,
-} from './MapControllerSimple';
+import { _updateAreaOfInterestInfo, _updateMapView, _updateSelectedHazard } from './MapControllerSimple';
 import AppRoutes from '../constants/AppRoutes';
 import { findIndicator, findVariant, groupOf } from '../utilities/indicatorSeasons';
 
@@ -38,6 +34,18 @@ export const AppContextProvider = ({ children }) => {
 
     const [indicators, setIndicators] = useState();
     const [page, setPage] = useState(AppRoutes.mapPage);
+    // Page to return to when the user guide is closed
+    const [guideReturnPage, setGuideReturnPage] = useState(AppRoutes.mapPage);
+
+    const openUserGuide = useCallback(() => {
+        if (page !== AppRoutes.userGuidePage) {
+            setGuideReturnPage(page);
+            setPage(AppRoutes.userGuidePage);
+        }
+        window.scrollTo(0, 0);
+    }, [page]);
+
+    const closeUserGuide = useCallback(() => setPage(guideReturnPage), [guideReturnPage]);
 
     // ----- JSAPI State -----
     const [mapView, setMapView] = useState(null);
@@ -193,6 +201,8 @@ export const AppContextProvider = ({ children }) => {
                 setIndicators,
                 page,
                 setPage,
+                openUserGuide,
+                closeUserGuide,
 
                 // JSAPI State
                 mapView,

@@ -4,16 +4,19 @@ import React, { useEffect, useRef, useState } from 'react';
 // Hooks, context, and constants
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@trussworks/react-uswds';
+import { useAppContext } from '../../context/AppContextSimple';
+import AppRoutes from '../../constants/AppRoutes';
 import { version } from '../../../package.json';
 
 // Component specific modules (Component-styled, etc.)
 import './AppHeader.scss';
 
 // Links shown in the header; those without an href are disabled until their pages exist
+// `page` items open a page inside the app
 const NAV_ITEMS = [
     { key: 'MainPage', href: 'https://climate.saihtet.dev/' },
     { key: 'DataSources' },
-    { key: 'UserGuide' },
+    { key: 'UserGuide', page: AppRoutes.userGuidePage },
 ];
 
 // Four bars in the colours of the four hazards (heat, wet bulb, drought, flood)
@@ -28,6 +31,7 @@ const LogoMark = () => (
 
 const AppHeader = () => {
     const { t } = useTranslation();
+    const { page: currentPage, openUserGuide } = useAppContext();
     // Narrow screens: the links open from a menu button
     const [menuOpen, setMenuOpen] = useState(false);
     const headerRef = useRef(null);
@@ -65,8 +69,21 @@ const AppHeader = () => {
                 </button>
             </div>
             <nav id="app-header-nav" className="appHeader__box appHeader__nav" aria-label={t('AppHeader.NavLabel')}>
-                {NAV_ITEMS.map(({ key, href }) =>
-                    href ? (
+                {NAV_ITEMS.map(({ key, href, page }) =>
+                    page ? (
+                        <button
+                            key={key}
+                            type="button"
+                            className="appHeader__nav-item appHeader__nav-button"
+                            aria-current={currentPage === page ? 'page' : undefined}
+                            onClick={() => {
+                                setMenuOpen(false);
+                                openUserGuide();
+                            }}
+                        >
+                            {t(`AppHeader.Nav.${key}`)}
+                        </button>
+                    ) : href ? (
                         <a key={key} className="appHeader__nav-item" href={href}>
                             {t(`AppHeader.Nav.${key}`)}
                         </a>

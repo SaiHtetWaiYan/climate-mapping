@@ -5,6 +5,7 @@ import React from 'react';
 import AppHeader from './components/AppHeader';
 import MapPage from './pages/MapPage';
 import DetailsPage from './pages/DetailsPage';
+import UserGuidePage from './pages/UserGuidePage';
 
 // Hooks, context, and constants
 import { useAppContext } from './context/AppContextSimple';
@@ -19,6 +20,7 @@ const App = () => {
         <div className="app-container">
             <AppHeader />
             {page === AppRoutes.detailsPage && <DetailsPage />}
+            {page === AppRoutes.userGuidePage && <UserGuidePage />}
             <MapPage active={page === AppRoutes.mapPage} />
         </div>
     );

@@ -178,6 +178,168 @@ const enTranslation = {
             ShortLabel: 'Season',
         },
     },
+    UserGuide: {
+        Title: 'User Guide',
+        Intro: 'Future Climate Hazards for Adaptation shows how extreme heat, humid heat, drought and flood-related conditions are projected to change in each of Myanmar’s 330 townships. Use it to compare townships, see how a township may change by mid-century and the end of the century, and find which hazards matter most for planning adaptation.',
+        Contents: 'Contents',
+        Sections: [
+            {
+                Id: 'map',
+                Images: [
+                    {
+                        File: '01-overview.webp',
+                        Alt: 'The map page: the header at the top, the filter panel on the left, zoom buttons, Myanmar coloured by the selected indicator and the legend at the bottom right.',
+                    },
+                ],
+                Title: 'Getting around the map',
+                Blocks: [
+                    'The map fills the screen. The filter panel is on the left (on a phone, tap Search and filters at the bottom to open it) and the legend is in the corner of the map.',
+                    {
+                        List: [
+                            { Term: 'Move the map', Text: 'drag it with the mouse or one finger.' },
+                            {
+                                Term: 'Zoom',
+                                Text: 'use the + and − buttons, the mouse wheel, a two-finger pinch, or double-click.',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                Id: 'township',
+                Images: [
+                    {
+                        File: '02-popup.webp',
+                        Alt: 'A township pop-up showing its name, its value for the selected indicator, and the Select Location and Explore Data buttons.',
+                    },
+                ],
+                Title: 'Finding a township',
+                Blocks: [
+                    'Type a township name in the Find a Myanmar township box and choose it from the suggestions. The map zooms to the township and selects it.',
+                    'You can also click any township on the map. A pop-up shows its value for the current selection. Use Select Location to make it the selected township, or Explore Data to open its detailed projections. Clicking another township shows its value without changing your selection.',
+                    'To clear the selected township, use the × next to its name at the top of the filter panel.',
+                ],
+            },
+            {
+                Id: 'filters',
+                Images: [
+                    {
+                        File: '03-filters.webp',
+                        Alt: 'The filter panel with a selected township, and the Hazards, Indicators, Season, Timeframe and Scenario dropdowns.',
+                    },
+                ],
+                Title: 'Choosing what to map',
+                Blocks: [
+                    'The filters decide what colours the map. Change any of them and the map updates straight away.',
+                    {
+                        List: [
+                            {
+                                Term: 'Hazards',
+                                Text: 'Extreme Heat, Wet Bulb Temperature (heat combined with humidity), Drought and Flood.',
+                            },
+                            {
+                                Term: 'Indicators',
+                                Text: 'the measures available for the chosen hazard, for example hot-season days above 40°C or the longest run of wet days. The list changes when you change the hazard.',
+                            },
+                            {
+                                Term: 'Season',
+                                Text: 'shown only for indicators that have seasonal values (wet bulb temperature and flood): Annual, Hot season, Cold season or Wet season.',
+                            },
+                            {
+                                Term: 'Timeframe',
+                                Text: 'Historical (1981–2010), Near Future (2031–2060) or Far Future (2071–2100). Each value is a 30-year average.',
+                            },
+                            {
+                                Term: 'Scenario',
+                                Text: 'Lower emissions (SSP2-4.5) or Higher emissions (SSP5-8.5). The scenario does not apply to the historical period.',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                Id: 'legend',
+                Images: [
+                    {
+                        File: '04-legend.webp',
+                        Alt: 'The legend with its About this map explanation open above the colour scale.',
+                    },
+                ],
+                Title: 'Reading the map and legend',
+                Blocks: [
+                    'Each township is coloured by its value for the selected indicator, season, timeframe and scenario. For most indicators, darker colours mean higher values. For drought intensity, darker colours mean more negative values, which is more severe drought.',
+                    'The legend shows three numbers. The middle one is the average of all townships; townships beyond the outer numbers get the lightest or darkest colour. Select the i button on the legend for an explanation of the current map.',
+                    'Townships without data are left uncoloured on the map and show N/A in pop-ups and tables.',
+                ],
+            },
+            {
+                Id: 'explore',
+                Images: [
+                    {
+                        File: '05-details.webp',
+                        Alt: 'The township details page with hazard tabs, period and season dropdowns, and an indicator expanded to show its bar chart.',
+                    },
+                ],
+                Title: 'Exploring a township',
+                Blocks: [
+                    'Select Explore Data (in the filter panel or a pop-up) to open the projections for the selected township.',
+                    {
+                        List: [
+                            {
+                                Term: 'Hazard tabs',
+                                Text: 'switch between the four hazards at the top of the page.',
+                            },
+                            {
+                                Term: 'Period and season',
+                                Text: 'choose Near Future or Far Future, and the season where it applies.',
+                            },
+                            {
+                                Term: 'Indicator rows',
+                                Text: 'each row shows the value under both scenarios and how much it changes from 1981–2010.',
+                            },
+                            {
+                                Term: 'Chart, Table and Details',
+                                Text: 'select + on a row to see a bar chart of every period, a table of the values, and a written summary.',
+                            },
+                        ],
+                    },
+                    'Select Back to return to the map. Your selections are kept.',
+                ],
+            },
+            {
+                Id: 'phone',
+                Images: [
+                    {
+                        File: '06-phone.webp',
+                        Alt: 'The map on a phone, with the legend under the header and the Search and filters bar at the bottom.',
+                    },
+                    {
+                        File: '07-phone-filters.webp',
+                        Alt: 'The Search and filters panel opened from the bottom of a phone screen.',
+                    },
+                ],
+                Title: 'Using a phone or tablet',
+                Blocks: [
+                    'On small screens the menu button (☰) in the header opens the links, the filters open from the Search and filters bar at the bottom, and the legend sits under the header.',
+                ],
+            },
+            {
+                Id: 'data',
+                Title: 'About the data',
+                Blocks: [
+                    'The values are township averages of climate model projections from the Climate Futures Myanmar township dataset, loaded from the CDE climate hazard service each time the map opens. Township boundaries and names are from MIMU.',
+                    'Projections describe possible future conditions under each emissions scenario. They are 30-year averages, not forecasts for a particular year, and are best used to compare townships and to see the direction and size of change.',
+                ],
+            },
+            {
+                Id: 'credits',
+                Title: 'Credits',
+                Blocks: [
+                    'This tool is adapted from the Climate Resilience Information System (CRIS) assessment tool by NOAA, used under the MIT License.',
+                ],
+            },
+        ],
+    },
     MapLegend: {
         InfoButton: 'About this map',
         CloseButton: 'Close',

@@ -102,10 +102,12 @@ To update later, run `git pull` in the web root. Apache uses the included `.htac
 ```
 scripts/
   deploy.sh                   build onto the deploy branch
+  guide-screenshots.mjs       retake the user guide screenshots (needs the dev server and Chrome)
 public/
   .htaccess                   Apache settings (blocks /.git, MIME type, caching)
   data/myanmar/               township names by code
   licenses/                   CRIS MIT license, linked from the app
+  images/user-guide/          user guide screenshots
 src/
   constants/ScreeningData.js  indicators, hazards, periods, scenarios
   constants/translations/     all user-facing text

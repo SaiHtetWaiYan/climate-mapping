@@ -267,6 +267,8 @@
 
 .esri-ui {
     overflow: visible !important;
+    // Above the map legend (z-index 1), so a pop-up is never hidden behind it
+    z-index: 2 !important;
 }
 
 .esri-feature__content-node [class*='popup-'] {
