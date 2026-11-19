@@ -84,7 +84,13 @@ const AppHeader = () => {
                             {t(`AppHeader.Nav.${key}`)}
                         </button>
                     ) : href ? (
-                        <a key={key} className="appHeader__nav-item" href={href}>
+                        <a
+                            key={key}
+                            className="appHeader__nav-item"
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             {t(`AppHeader.Nav.${key}`)}
                         </a>
                     ) : (
