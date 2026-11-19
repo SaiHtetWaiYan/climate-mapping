@@ -404,3 +404,11 @@ ul {
 .esri-view .esri-view-surface:focus:not(:focus-visible)::after {
     outline: none;
 }
+
+// Zoom buttons: white with the app's navy border
+.esri-component.esri-zoom {
+    border: 1px solid var(--color-primary);
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}

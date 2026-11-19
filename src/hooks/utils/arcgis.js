@@ -34,7 +34,8 @@ const getViewPadding = () => {
     // top: room for the header (and on phones the legend below it)
     if (smallScreen.matches) return { top: 150, bottom: 72 };
     if (mediumScreen.matches) return { top: 80, left: 320 };
-    return { top: 80, left: 480 };
+    // the filter panel ends at 514px (32px margin + 482px)
+    return { top: 80, left: 520 };
 };
 
 export function loadView(basemap, options) {

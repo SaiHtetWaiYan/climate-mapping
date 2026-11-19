@@ -20,8 +20,9 @@ export function useMapView(basemap, options = {}) {
             const { basemap, options } = initialArguments.current;
             const loadViewResults = loadView(basemap, options);
             _view = loadViewResults.view;
-            // Zoom with the mouse wheel or pinch; the zoom buttons sat behind the side panel
-            _view.ui.remove('zoom');
+            // Zoom buttons at the top left of the visible map (the view padding keeps them
+            // clear of the header and filter panel)
+            _view.ui.move('zoom', 'top-left');
             if (cancelled) {
                 return;
             }
