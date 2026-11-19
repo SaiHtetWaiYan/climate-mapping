@@ -15,7 +15,7 @@ async function fetchJSON(url) {
  * @returns {Promise<string>} object URL of the GeoJSON, for a GeoJSONLayer
  */
 export async function loadTownshipsGeoJSON() {
-    const { url, maxAllowableOffset, geometryPrecision } = AppConfig.datasets.climateHazards;
+    const { url, geometryPrecision } = AppConfig.datasets.climateHazards;
     const [layerInfo, names] = await Promise.all([
         fetchJSON(`${url}?f=json`),
         fetchJSON(AppConfig.datasets.townshipNames.url),
@@ -42,7 +42,6 @@ export async function loadTownshipsGeoJSON() {
         outFields: [pcodeField, ...fieldMap.map(([apiField]) => apiField)].join(','),
         returnGeometry: true,
         outSR: 4326,
-        maxAllowableOffset,
         geometryPrecision,
         f: 'geojson',
     });

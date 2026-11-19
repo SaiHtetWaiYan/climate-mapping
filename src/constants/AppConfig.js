@@ -5,8 +5,8 @@ const AppConfig = {
         // Township boundaries and indicator values (Climate Futures Myanmar, CDE)
         climateHazards: {
             url: 'https://gis.cde.unibe.ch/gis/rest/services/Hosted/climate_hazard/FeatureServer/0',
-            // Simplify the boundaries (degrees, about 200 m) to keep the download small
-            maxAllowableOffset: 0.002,
+            // Full-detail boundaries: simplifying them leaves gaps between neighbouring townships.
+            // 4 decimal places (about 10 m) keeps the download smaller without opening gaps.
             geometryPrecision: 4,
         },
         // Township and region names by TS_PCODE (MIMU), which the API doesn't include
