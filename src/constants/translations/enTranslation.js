@@ -124,8 +124,16 @@ const droughtText = () =>
 
 const enTranslation = {
     App: {
-        Title: 'Climate Mapping',
+        Title: 'Future Climate Hazards for Adaptation',
         BackButtonText: 'Back',
+    },
+    AppHeader: {
+        NavLabel: 'Main',
+        ComingSoon: 'Coming soon',
+        Nav: {
+            DataSources: 'Data Sources',
+            UserGuide: 'User Guide',
+        },
     },
     Alert: {
         RenderError: {
@@ -200,6 +208,12 @@ const enTranslation = {
         ClearBtn: 'Clear Selection',
         SearchTitle: 'Find a Myanmar township',
         MobileToggle: 'Search and filters',
+        Credit: {
+            Before: 'Adapted from the ',
+            Link: 'Climate Resilience Information System (CRIS)',
+            Middle: ' by NOAA, used under the ',
+            License: 'MIT License',
+        },
         CloseBtn: {
             Close: 'Clear selected area',
         },

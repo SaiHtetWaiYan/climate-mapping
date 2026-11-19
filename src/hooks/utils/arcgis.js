@@ -31,9 +31,10 @@ import MapSymbols from '../../constants/MapSymbols';
 const smallScreen = window.matchMedia('(max-width: 720px)');
 const mediumScreen = window.matchMedia('(max-width: 960px)');
 const getViewPadding = () => {
-    if (smallScreen.matches) return { top: 80, bottom: 72 };
-    if (mediumScreen.matches) return { left: 320 };
-    return { left: 480 };
+    // top: room for the header (and on phones the legend below it)
+    if (smallScreen.matches) return { top: 150, bottom: 72 };
+    if (mediumScreen.matches) return { top: 80, left: 320 };
+    return { top: 80, left: 480 };
 };
 
 export function loadView(basemap, options) {

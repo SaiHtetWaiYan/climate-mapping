@@ -2,7 +2,7 @@
 
 An interactive map of township-level climate hazard projections for Myanmar, using data from the Climate Futures Myanmar modelling team. Choose a hazard, indicator, time period and emissions scenario to colour all townships on the map, then open any township to see its projections as a chart, table and written summary.
 
-Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/latest/) 5.1, adapted from NOAA's [Climate Mapping for Resilience and Adaptation](https://resilience.climate.gov/) assessment tool.
+Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/latest/) 5.1, adapted from the assessment tool of the [Climate Resilience Information System (CRIS)](https://github.com/NOAA-CRIS/CRIS) by NOAA, used under the MIT License (see [Credits](#credits)).
 
 - **Repository:** [git.cde.unibe.ch/OneMapMyanmar/climate-futures-hazards](https://git.cde.unibe.ch/OneMapMyanmar/climate-futures-hazards)
 - **Site:** hazards.climatefutures-mm.org
@@ -105,6 +105,7 @@ scripts/
 public/
   .htaccess                   Apache settings (blocks /.git, MIME type, caching)
   data/myanmar/               township names by code
+  licenses/                   CRIS MIT license, linked from the app
 src/
   constants/ScreeningData.js  indicators, hazards, periods, scenarios
   constants/translations/     all user-facing text
@@ -115,3 +116,9 @@ src/
   components/                 map, controls, legend, search, indicator views
   pages/                      map page and township details page
 ```
+
+## Credits
+
+This project is adapted from the [Climate Resilience Information System (CRIS)](https://github.com/NOAA-CRIS/CRIS) assessment tool, Copyright (c) 2024 NOAA-CRIS, released under the MIT License. The full license text is in [`LICENSE`](LICENSE); a copy is deployed with the site at `/licenses/CRIS-LICENSE.txt` and linked from the app.
+
+Climate data: Climate Futures Myanmar. Township boundaries and names: MIMU.

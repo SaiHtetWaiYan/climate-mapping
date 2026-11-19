@@ -2,7 +2,8 @@
     &-container {
         position: relative;
         padding: 0 32px 32px 32px;
-        margin-block-start: 32px;
+        // Below the header
+        margin-block-start: calc(var(--app-header-bottom) + 24px);
         z-index: 10;
 
         // TODO: @Joe make sure we don't have scroll bar issues

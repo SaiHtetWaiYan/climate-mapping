@@ -4,10 +4,11 @@
         border: 1px solid var(--color-primary);
         overflow: auto;
         position: absolute;
-        inset-block-start: 24px;
+        // Below the header
+        inset-block-start: calc(var(--app-header-bottom) + 12px);
         inset-inline-start: 32px;
         // Fit the content, scrolling only when it is taller than the map
-        max-height: calc(100% - (24px * 2));
+        max-height: calc(100% - var(--app-header-bottom) - 12px - 24px);
     }
 
     &__search-title {
@@ -160,6 +161,18 @@
     &__close-button {
         & svg {
             scale: 0.725;
+        }
+    }
+
+    // Credit for the original CRIS tool (MIT License)
+    &__credit {
+        margin: 0.5rem 0 0 !important;
+        font-size: 0.75rem;
+        line-height: 1.4;
+        color: var(--color-base-dark);
+
+        & a {
+            color: inherit;
         }
     }
 

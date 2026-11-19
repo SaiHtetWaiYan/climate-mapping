@@ -2,6 +2,7 @@
 import React from 'react';
 
 // App components
+import AppHeader from './components/AppHeader';
 import MapPage from './pages/MapPage';
 import DetailsPage from './pages/DetailsPage';
 
@@ -16,6 +17,7 @@ const App = () => {
 
     return (
         <div className="app-container">
+            <AppHeader />
             {page === AppRoutes.detailsPage && <DetailsPage />}
             <MapPage active={page === AppRoutes.mapPage} />
         </div>

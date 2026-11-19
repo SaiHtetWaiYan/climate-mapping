@@ -1,3 +1,17 @@
+// Header position and size; other elements are placed below it (see AppHeader.scss)
+:root {
+    --app-header-top: 24px;
+    --app-header-height: 56px;
+    --app-header-bottom: calc(var(--app-header-top) + var(--app-header-height));
+}
+
+@media screen and (max-width: 720px) {
+    :root {
+        --app-header-top: 0.75rem;
+        --app-header-height: 44px;
+    }
+}
+
 .app-container {
     position: absolute;
     width: 100%;
