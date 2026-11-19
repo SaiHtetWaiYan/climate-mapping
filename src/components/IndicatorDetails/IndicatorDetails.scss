@@ -145,12 +145,17 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        &:first-of-type .indicatorDetails-item-title {
-            background: var(--color-warm-light);
-        }
-        &:last-of-type .indicatorDetails-item-title {
-            background: var(--color-secondary-light);
-        }
+    }
+
+    // Table block titles: grey for the historical period (as in the chart), then one colour per scenario
+    &-item-title--historic {
+        background: var(--color-base-lighter);
+    }
+    &-item-title--rcp45 {
+        background: var(--color-warm-light);
+    }
+    &-item-title--rcp85 {
+        background: var(--color-secondary-light);
     }
 
     &-item-title {
