@@ -167,6 +167,20 @@ const enTranslation = {
             ShortLabel: 'Season',
         },
     },
+    MapLegend: {
+        InfoButton: 'About this map',
+        CloseButton: 'Close',
+        InfoTitle: 'About this map',
+        Showing: 'Showing {{period}}{{scenario}}.',
+        Scenario: ', {{scenario}}',
+        HigherDarker: 'Each township is coloured by its value: the darker the colour, the higher the value.',
+        LowerDarker:
+            'Each township is coloured by its value: the darker the colour, the lower (more negative) the value and the more severe the drought.',
+        Numbers:
+            'The middle number ({{mid}}) is the average of all townships. Townships at {{low}} or below get the colour on the left, and those at {{high}} or above the colour on the right.',
+        NoData: 'Townships without data are not coloured.',
+        Click: 'Click a township to see its values, or use Explore Data for charts and a table.',
+    },
     Map: {
         Popup: {
             actionButton1: 'Explore Data',

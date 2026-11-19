@@ -28,6 +28,49 @@
         }
     }
 
+    // Info button in the top-right corner and the explanation it opens
+    &-info-button {
+        position: absolute;
+        inset-block-start: 0.5rem;
+        inset-inline-end: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--color-primary);
+        cursor: pointer;
+
+        &:hover {
+            background: var(--color-base-lighter);
+        }
+    }
+
+    &-info {
+        max-height: 40vh;
+        overflow-y: auto;
+        padding-inline-end: 1.5rem;
+        margin-block-end: 0.75rem;
+        padding-block-end: 0.75rem;
+        border-block-end: 1px solid var(--color-base-lighter);
+        color: var(--color-base-darkest);
+        line-height: 1.4;
+
+        & p {
+            margin: 0 0 0.5rem;
+        }
+    }
+
+    &-info-title {
+        font-size: 1rem;
+        color: var(--color-primary);
+        margin: 0 0 0.5rem !important;
+    }
+
     &-row {
         display: flex;
         flex-direction: row;
@@ -38,6 +81,8 @@
 
         &:has(.mapLegend-icon) {
             margin-block-end: 0.5rem;
+            // keep the title clear of the info button
+            padding-inline-end: 1.5rem;
         }
     }
 
@@ -177,5 +222,17 @@ span.gray-slr {
 
     .mapLegend-colors-container {
         height: 0.75rem;
+    }
+
+    .mapLegend-info-button {
+        inset-block-start: 0.25rem;
+        inset-inline-end: 0.25rem;
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+
+    .mapLegend-info {
+        max-height: 45vh;
+        padding-inline-end: 1rem;
     }
 }

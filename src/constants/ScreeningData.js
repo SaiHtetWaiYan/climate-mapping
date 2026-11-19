@@ -51,6 +51,8 @@ const droughtIndicators = () => {
                 // duration and number of events are reversed so the highest values are darkest
                 colorRampName: 'Brown 1',
                 reverseColorRamp: measure.reverseColorRamp,
+                // Intensity is negative: the lower the value, the more severe the drought
+                lowerIsWorse: measure.key === 'INT',
             }))
         )
     );
