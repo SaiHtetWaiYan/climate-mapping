@@ -130,6 +130,8 @@ const enTranslation = {
     AppHeader: {
         NavLabel: 'Main',
         ComingSoon: 'Coming soon',
+        OpenMenu: 'Open menu',
+        CloseMenu: 'Close menu',
         Nav: {
             MainPage: 'Main Page',
             DataSources: 'Data Sources',

@@ -1,8 +1,9 @@
 // Framework and third-party non-ui
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Hooks, context, and constants
 import { useTranslation } from 'react-i18next';
+import { Icon } from '@trussworks/react-uswds';
 import { version } from '../../../package.json';
 
 // Component specific modules (Component-styled, etc.)
@@ -27,15 +28,43 @@ const LogoMark = () => (
 
 const AppHeader = () => {
     const { t } = useTranslation();
+    // Narrow screens: the links open from a menu button
+    const [menuOpen, setMenuOpen] = useState(false);
+    const headerRef = useRef(null);
+
+    // Close the menu with Escape or a click outside the header
+    useEffect(() => {
+        if (!menuOpen) {
+            return undefined;
+        }
+        const onKeyDown = (event) => event.key === 'Escape' && setMenuOpen(false);
+        const onPointerDown = (event) => !headerRef.current?.contains(event.target) && setMenuOpen(false);
+        document.addEventListener('keydown', onKeyDown);
+        document.addEventListener('pointerdown', onPointerDown);
+        return () => {
+            document.removeEventListener('keydown', onKeyDown);
+            document.removeEventListener('pointerdown', onPointerDown);
+        };
+    }, [menuOpen]);
 
     return (
-        <header className="appHeader">
+        <header ref={headerRef} className={`appHeader ${menuOpen ? 'appHeader--menu-open' : ''}`}>
             <div className="appHeader__box appHeader__title-box">
                 <LogoMark />
                 <h1 className="appHeader__title">{t('App.Title')}</h1>
                 <span className="appHeader__version">v{version}</span>
+                <button
+                    type="button"
+                    className="appHeader__menu-button"
+                    aria-expanded={menuOpen}
+                    aria-controls="app-header-nav"
+                    aria-label={menuOpen ? t('AppHeader.CloseMenu') : t('AppHeader.OpenMenu')}
+                    onClick={() => setMenuOpen(!menuOpen)}
+                >
+                    {menuOpen ? <Icon.Close aria-hidden size={3} /> : <Icon.Menu aria-hidden size={3} />}
+                </button>
             </div>
-            <nav className="appHeader__box appHeader__nav" aria-label={t('AppHeader.NavLabel')}>
+            <nav id="app-header-nav" className="appHeader__box appHeader__nav" aria-label={t('AppHeader.NavLabel')}>
                 {NAV_ITEMS.map(({ key, href }) =>
                     href ? (
                         <a key={key} className="appHeader__nav-item" href={href}>
