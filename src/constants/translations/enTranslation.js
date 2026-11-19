@@ -131,6 +131,7 @@ const enTranslation = {
         NavLabel: 'Main',
         ComingSoon: 'Coming soon',
         Nav: {
+            MainPage: 'Main Page',
             DataSources: 'Data Sources',
             UserGuide: 'User Guide',
         },

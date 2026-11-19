@@ -53,14 +53,32 @@
         flex-shrink: 0;
     }
 
-    // Disabled until the pages exist
     &__nav-item {
         font-size: 1rem;
         white-space: nowrap;
+        color: #fff;
         text-decoration: underline;
         text-underline-offset: 4px;
-        opacity: 0.55;
-        cursor: not-allowed;
+
+        &:visited {
+            color: #fff;
+        }
+
+        // links only; disabled items are spans
+        &:is(a):hover {
+            text-decoration-thickness: 2px;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #fff !important;
+            outline-offset: 3px !important;
+        }
+
+        // Disabled until the pages exist
+        &--disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
     }
 }
 
