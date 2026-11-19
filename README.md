@@ -9,12 +9,12 @@ Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://devel
 
 ## Indicators
 
-| Hazard | Indicators |
-|---|---|
-| Extreme heat | Hot-season days above 40°C and 45°C |
-| Wet bulb temperature | Days with wet-bulb temperature above 25°C, 28°C and 31°C |
-| Drought | Drought intensity (SPEI-3/6/12 and SPI-3/6/12) |
-| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain |
+| Hazard | Indicators | Seasons |
+|---|---|---|
+| Extreme heat | Hot-season days above 40°C and 45°C, longest run of days above 40°C, longest run of nights above 30°C and 35°C, longest heat wave | — |
+| Wet bulb temperature | Days with wet-bulb temperature above 25°C, 28°C and 31°C | Annual, hot, cold, wet |
+| Drought | Intensity, duration and number of drought events (SPEI and SPI over 3, 6, 12 and 24 months) | — |
+| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain | Annual, hot, cold, wet |
 
 Each indicator has values for three periods and two scenarios:
 
@@ -53,8 +53,8 @@ To test a production build: `npm run build && npm run preview`, then open http:/
 
 ## Adding an indicator
 
-1. Add an entry to `indicators` in [`src/constants/ScreeningData.js`](src/constants/ScreeningData.js) with a short ID, its API field name without the period (`source`), its hazard, number format and colour scheme.
-2. Add its title, units and explanation under `Indicators` in [`src/constants/translations/enTranslation.js`](src/constants/translations/enTranslation.js).
+1. Add an entry to `indicators` in [`src/constants/ScreeningData.js`](src/constants/ScreeningData.js) with a short ID, its API field name without the period (`source`), its hazard, number format and colour scheme. For an indicator with seasons, wrap it in `seasonal(...)` and put `{season}` in `source`.
+2. Add its title, units and explanation under `Indicators` in [`src/constants/translations/enTranslation.js`](src/constants/translations/enTranslation.js) (`seasonalText(...)` for one with seasons).
 3. If the colour scheme is new, add its gradient to [`src/components/MapLegend/MapLegend.scss`](src/components/MapLegend/MapLegend.scss).
 
 The dropdowns, map, legend, popup and details page pick up the new indicator automatically.
@@ -110,6 +110,7 @@ src/
   constants/translations/     all user-facing text
   constants/AppConfig.js      basemap, API URL, renderer template
   utilities/townshipData.js   loads the townships from the API
+  utilities/indicatorSeasons.js  picks the indicator for the selected season
   context/                    app state and map controller
   components/                 map, controls, legend, search, indicator views
   pages/                      map page and township details page

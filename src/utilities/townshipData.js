@@ -39,7 +39,8 @@ export async function loadTownshipsGeoJSON() {
 
     const params = new URLSearchParams({
         where: '1=1',
-        outFields: [pcodeField, ...fieldMap.map(([apiField]) => apiField)].join(','),
+        // All fields: listing the ~270 indicator fields by name makes the URL too long for the server
+        outFields: '*',
         returnGeometry: true,
         outSR: 4326,
         geometryPrecision,

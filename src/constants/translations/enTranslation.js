@@ -30,6 +30,98 @@ const SPEI_INTRO = (months) =>
 const SPI_INTRO = (months) =>
     `The Standardized Precipitation Index (SPI) compares rainfall with the long-term normal. SPI-${months} looks at rainfall over ${months} months. A value of 0 means normal rainfall; the more negative the value, the more intense the drought.`;
 
+const HEAT_NIGHTS_INTRO =
+    'Hot nights stop the body from recovering from daytime heat, raising the risk of heat stress, especially for older people and those without cooling.';
+
+// How each season is described in the text
+const SEASON_TEXT = {
+    ANNUAL: { label: 'annual', per: 'per year', in: 'in a year' },
+    HOT: { label: 'hot season', per: 'per hot season', in: 'in the hot season' },
+    COLD: { label: 'cold season', per: 'per cold season', in: 'in the cold season' },
+    WET: { label: 'wet season', per: 'per wet season', in: 'in the wet season' },
+};
+
+/**
+ * Text for one indicator in each season, keyed like WBT28_HOT.
+ * GroupTitle is shown in the indicator list; Title (with the season) on the legend and details page.
+ * @param {string} id indicator group ID, e.g. 'WBT28'
+ * @param {Function} text (season) => { title, details, baseline, unit, intro, postfix }
+ */
+const seasonalText = (id, text) =>
+    Object.fromEntries(
+        Object.entries(SEASON_TEXT).map(([season, s]) => {
+            const { title, details, baseline, unit, intro, postfix = 'Days' } = text(s);
+            return [
+                `${id}_${season}`,
+                {
+                    GroupTitle: title,
+                    Title: `${title} (${s.label})`,
+                    Details: details,
+                    Prefix: '',
+                    Postfix: postfix,
+                    LongText: projectionText({ intro, baseline, unit }),
+                },
+            ];
+        })
+    );
+
+const DROUGHT_INDEX = {
+    SPEI: { intro: SPEI_INTRO, name: 'Standardized Precipitation Evapotranspiration Index' },
+    SPI: { intro: SPI_INTRO, name: 'Standardized Precipitation Index' },
+};
+
+// Intensity, duration and number of events for SPEI and SPI over 3, 6, 12 and 24 months
+const droughtText = () =>
+    Object.fromEntries(
+        ['SPEI', 'SPI'].flatMap((index) =>
+            [3, 6, 12, 24].flatMap((months) => {
+                const { intro, name } = DROUGHT_INDEX[index];
+                const label = `${index}-${months}`;
+                const full = `the ${months}-month ${name}`;
+                const entry = (title, details, baseline, unit, postfix) => ({
+                    Title: title,
+                    GroupTitle: title,
+                    Details: details,
+                    Prefix: '',
+                    Postfix: postfix,
+                    LongText: projectionText({ intro: intro(months), baseline, unit }),
+                });
+                return [
+                    [
+                        `${index}${months}_INT`,
+                        entry(
+                            `Drought intensity (${label})`,
+                            `Average intensity of drought events from ${full}`,
+                            '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
+                            '',
+                            index
+                        ),
+                    ],
+                    [
+                        `${index}${months}_DUR`,
+                        entry(
+                            `Drought duration (${label})`,
+                            `Average length of drought events from ${full}`,
+                            'drought events in {{geoName}} lasted {{HISTORIC_MEAN}} months on average',
+                            'months',
+                            'Months'
+                        ),
+                    ],
+                    [
+                        `${index}${months}_NUM`,
+                        entry(
+                            `Number of drought events (${label})`,
+                            `Average number of drought events from ${full}`,
+                            '{{geoName}} had an average of {{HISTORIC_MEAN}} drought events',
+                            'drought events',
+                            'Events'
+                        ),
+                    ],
+                ];
+            })
+        )
+    );
+
 const enTranslation = {
     App: {
         Title: 'Climate Mapping',
@@ -70,6 +162,9 @@ const enTranslation = {
         },
         Timeframe: {
             All: 'Timeframe',
+        },
+        Season: {
+            ShortLabel: 'Season',
         },
     },
     Map: {
@@ -116,6 +211,12 @@ const enTranslation = {
         },
         Stats: {
             MEAN: 'Mean',
+        },
+        Seasons: {
+            ANNUAL: 'Annual',
+            HOT: 'Hot season',
+            COLD: 'Cold season',
+            WET: 'Wet season',
         },
         Models: {
             RCP45: {
@@ -167,132 +268,85 @@ const enTranslation = {
                 unit: 'days per hot season',
             }),
         },
-        WBT25: {
-            Title: 'Days with wet-bulb temperature > 25°C',
-            Details: 'Number of days per year when the daily wet-bulb temperature exceeds 25°C',
+        CD40C: {
+            Title: 'Longest run of days with maximum temperature > 40°C',
+            Details: 'Longest run of consecutive days per year when the daily maximum temperature exceeds 40°C',
             Prefix: '',
             Postfix: 'Days',
             LongText: projectionText({
-                intro: WET_BULB_INTRO,
-                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} days per year with a wet-bulb temperature above 25°C',
-                unit: 'days per year',
-            }),
-        },
-        WBT28: {
-            Title: 'Days with wet-bulb temperature > 28°C',
-            Details: 'Number of days per year when the daily wet-bulb temperature exceeds 28°C',
-            Prefix: '',
-            Postfix: 'Days',
-            LongText: projectionText({
-                intro: WET_BULB_INTRO,
-                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} days per year with a wet-bulb temperature above 28°C',
-                unit: 'days per year',
-            }),
-        },
-        WBT31: {
-            Title: 'Days with wet-bulb temperature > 31°C',
-            Details: 'Number of days per year when the daily wet-bulb temperature exceeds 31°C',
-            Prefix: '',
-            Postfix: 'Days',
-            LongText: projectionText({
-                intro: WET_BULB_INTRO,
-                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} days per year with a wet-bulb temperature above 31°C',
-                unit: 'days per year',
-            }),
-        },
-        DRY: {
-            Title: 'Dry days',
-            Details: 'Number of dry days per year',
-            Prefix: '',
-            Postfix: 'Days',
-            LongText: projectionText({
-                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} dry days per year',
-                unit: 'dry days per year',
-            }),
-        },
-        SPEI3: {
-            Title: 'Drought intensity (SPEI-3)',
-            Details: 'Drought intensity from the 3-month Standardized Precipitation Evapotranspiration Index',
-            Prefix: '',
-            Postfix: 'SPEI',
-            LongText: projectionText({
-                intro: SPEI_INTRO(3),
-                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
-            }),
-        },
-        SPEI6: {
-            Title: 'Drought intensity (SPEI-6)',
-            Details: 'Drought intensity from the 6-month Standardized Precipitation Evapotranspiration Index',
-            Prefix: '',
-            Postfix: 'SPEI',
-            LongText: projectionText({
-                intro: SPEI_INTRO(6),
-                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
-            }),
-        },
-        SPEI12: {
-            Title: 'Drought intensity (SPEI-12)',
-            Details: 'Drought intensity from the 12-month Standardized Precipitation Evapotranspiration Index',
-            Prefix: '',
-            Postfix: 'SPEI',
-            LongText: projectionText({
-                intro: SPEI_INTRO(12),
-                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
-            }),
-        },
-        SPI3: {
-            Title: 'Drought intensity (SPI-3)',
-            Details: 'Drought intensity from the 3-month Standardized Precipitation Index',
-            Prefix: '',
-            Postfix: 'SPI',
-            LongText: projectionText({
-                intro: SPI_INTRO(3),
-                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
-            }),
-        },
-        SPI6: {
-            Title: 'Drought intensity (SPI-6)',
-            Details: 'Drought intensity from the 6-month Standardized Precipitation Index',
-            Prefix: '',
-            Postfix: 'SPI',
-            LongText: projectionText({
-                intro: SPI_INTRO(6),
-                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
-            }),
-        },
-        SPI12: {
-            Title: 'Drought intensity (SPI-12)',
-            Details: 'Drought intensity from the 12-month Standardized Precipitation Index',
-            Prefix: '',
-            Postfix: 'SPI',
-            LongText: projectionText({
-                intro: SPI_INTRO(12),
-                baseline: '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
-            }),
-        },
-        RR50: {
-            Title: 'Days with more than 50 mm of rain',
-            Details: 'Number of days per year with more than 50 mm of rain',
-            Prefix: '',
-            Postfix: 'Days',
-            LongText: projectionText({
-                intro: 'Days with very heavy rain can cause flash floods and landslides.',
-                baseline: '{{geoName}} averaged {{HISTORIC_MEAN}} days per year with more than 50 mm of rain',
-                unit: 'days per year',
-            }),
-        },
-        CWD: {
-            Title: 'Longest run of wet days',
-            Details: 'Longest run of consecutive wet days per year',
-            Prefix: '',
-            Postfix: 'Days',
-            LongText: projectionText({
-                intro: 'Long wet spells saturate the soil and raise the risk of river flooding.',
                 baseline:
-                    'the longest run of consecutive wet days in {{geoName}} averaged {{HISTORIC_MEAN}} days per year',
+                    'the longest run of consecutive days above 40°C in {{geoName}} averaged {{HISTORIC_MEAN}} days per year',
                 unit: 'days',
             }),
         },
+        CN30C: {
+            Title: 'Longest run of nights > 30°C',
+            Details: 'Longest run of consecutive nights per year when the temperature stays above 30°C',
+            Prefix: '',
+            Postfix: 'Nights',
+            LongText: projectionText({
+                intro: HEAT_NIGHTS_INTRO,
+                baseline:
+                    'the longest run of consecutive nights above 30°C in {{geoName}} averaged {{HISTORIC_MEAN}} nights per year',
+                unit: 'nights',
+            }),
+        },
+        CN35C: {
+            Title: 'Longest run of nights > 35°C',
+            Details: 'Longest run of consecutive nights per year when the temperature stays above 35°C',
+            Prefix: '',
+            Postfix: 'Nights',
+            LongText: projectionText({
+                intro: HEAT_NIGHTS_INTRO,
+                baseline:
+                    'the longest run of consecutive nights above 35°C in {{geoName}} averaged {{HISTORIC_MEAN}} nights per year',
+                unit: 'nights',
+            }),
+        },
+        HWD: {
+            Title: 'Longest heat wave',
+            Details: 'Duration of the longest heat wave per year',
+            Prefix: '',
+            Postfix: 'Days',
+            LongText: projectionText({
+                baseline: 'the longest heat wave in {{geoName}} lasted {{HISTORIC_MEAN}} days per year on average',
+                unit: 'days',
+            }),
+        },
+        ...[25, 28, 31].reduce(
+            (all, threshold) => ({
+                ...all,
+                ...seasonalText(`WBT${threshold}`, (s) => ({
+                    title: `Days with wet-bulb temperature > ${threshold}°C`,
+                    details: `Number of days ${s.in} when the daily wet-bulb temperature exceeds ${threshold}°C`,
+                    intro: WET_BULB_INTRO,
+                    baseline: `{{geoName}} averaged {{HISTORIC_MEAN}} days ${s.per} with a wet-bulb temperature above ${threshold}°C`,
+                    unit: `days ${s.per}`,
+                })),
+            }),
+            {}
+        ),
+        ...droughtText(),
+        ...seasonalText('DRY', (s) => ({
+            title: 'Dry days',
+            details: `Number of dry days ${s.in}`,
+            baseline: `{{geoName}} averaged {{HISTORIC_MEAN}} dry days ${s.per}`,
+            unit: `dry days ${s.per}`,
+        })),
+        ...seasonalText('CWD', (s) => ({
+            title: 'Longest run of wet days',
+            details: `Longest run of consecutive wet days ${s.in}`,
+            intro: 'Long wet spells saturate the soil and raise the risk of river flooding.',
+            baseline: `the longest run of consecutive wet days in {{geoName}} averaged {{HISTORIC_MEAN}} days ${s.per}`,
+            unit: 'days',
+        })),
+        ...seasonalText('RR50', (s) => ({
+            title: 'Days with more than 50 mm of rain',
+            details: `Number of days ${s.in} with more than 50 mm of rain`,
+            intro: 'Days with very heavy rain can cause flash floods and landslides.',
+            baseline: `{{geoName}} averaged {{HISTORIC_MEAN}} days ${s.per} with more than 50 mm of rain`,
+            unit: `days ${s.per}`,
+        })),
     },
 };
 

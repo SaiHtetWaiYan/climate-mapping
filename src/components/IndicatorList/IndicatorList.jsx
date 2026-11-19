@@ -8,6 +8,7 @@ import ScreeningData from '../../constants/ScreeningData';
 
 // App components
 import IndicatorItem from './IndicatorItem';
+import SeasonSelect from '../SeasonSelect';
 
 // Component specific modules (Component-styled, etc.)
 import './IndicatorList.scss';
@@ -25,6 +26,15 @@ const IndicatorList = () => {
     const { t } = useTranslation();
 
     const { indicators, timeframe, setTimeframe, selectedHazard } = useAppContext();
+
+    // Seasons used by this hazard's indicators
+    const hazardSeasons = useMemo(
+        () =>
+            ScreeningData.seasons.filter((season) =>
+                ScreeningData.indicators.some((indicator) => indicator[selectedHazard] && indicator.season === season)
+            ),
+        [selectedHazard]
+    );
 
     const localIndicators = useMemo(() => {
         return (indicators ?? []).sort((a, b) => a[selectedHazard] - b[selectedHazard]);
@@ -71,6 +81,7 @@ const IndicatorList = () => {
                                     </option>
                                 ))}
                             </Select>
+                            <SeasonSelect seasons={hazardSeasons} showLabel={false} />
                         </div>
                         <div className="indicatorList-header-container--end">
                             <div className="indicatorList-header--orange">

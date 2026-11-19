@@ -13,17 +13,24 @@ import './IndicatorSelect.scss';
 // Third-party components (buttons, icons, etc.)
 import { Select } from '@trussworks/react-uswds';
 import ScreeningData from '../../constants/ScreeningData';
+import { findIndicator, groupOf } from '../../utilities/indicatorSeasons';
 
 const IndicatorSelect = () => {
     // ----- Language -----
     const { t } = useTranslation();
 
-    const { selectedIndicatorId, setSelectedIndicatorId, selectedHazard } = useAppContext();
+    const { selectedIndicatorId, selectIndicatorGroup, selectedHazard } = useAppContext();
 
+    // One entry per indicator; its seasons are chosen in the season dropdown
     const localIndicators = useMemo(() => {
+        const seen = new Set();
         return ScreeningData.indicators
             .filter((indicator) => !!indicator[selectedHazard])
-            .sort((a, b) => a[selectedHazard] - b[selectedHazard]);
+            .sort((a, b) => a[selectedHazard] - b[selectedHazard])
+            .filter((indicator) => {
+                const group = groupOf(indicator);
+                return seen.has(group) ? false : seen.add(group);
+            });
     }, [selectedHazard]);
 
     return (
@@ -35,17 +42,19 @@ const IndicatorSelect = () => {
             <Select
                 id="indicator-dropdown"
                 name="indicator-dropdown"
-                value={selectedIndicatorId || ''}
+                value={groupOf(findIndicator(selectedIndicatorId)) || ''}
                 onChange={(event) => {
                     if (event?.target?.value) {
-                        setSelectedIndicatorId(event?.target?.value);
+                        selectIndicatorGroup(event.target.value);
                     }
                 }}
             >
                 {localIndicators.map((indicator, idx) => {
                     return (
-                        <option value={indicator.id} key={idx}>
-                            {t(`Indicators.${indicator.id}.Title`)}
+                        <option value={groupOf(indicator)} key={idx}>
+                            {t(`Indicators.${indicator.id}.GroupTitle`, {
+                                defaultValue: t(`Indicators.${indicator.id}.Title`),
+                            })}
                         </option>
                     );
                 })}

@@ -15,6 +15,8 @@ import HazardSelect from '../HazardSelect';
 import IndicatorSelect from '../IndicatorSelect';
 import ModelSelect from '../ModelSelect/ModelSelect';
 import TimeframeSelect from '../TimeframeSelect';
+import SeasonSelect from '../SeasonSelect';
+import { findIndicator, groupOf, seasonsOf } from '../../utilities/indicatorSeasons';
 import Divider from '../Divider';
 import MapSearch from '../MapSearch';
 
@@ -101,6 +103,7 @@ const MapControls = () => {
                     )}
                     <HazardSelect />
                     <IndicatorSelect />
+                    <SeasonSelect seasons={seasonsOf(groupOf(findIndicator(selectedIndicatorId)))} />
                     <TimeframeSelect
                         timeframes={ScreeningData.indicators.find((ind) => ind.id === selectedIndicatorId)?.timeframes}
                     />

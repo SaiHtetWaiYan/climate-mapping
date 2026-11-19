@@ -10,6 +10,7 @@ import {
     _updateSelectedHazard,
 } from './MapControllerSimple';
 import AppRoutes from '../constants/AppRoutes';
+import { findIndicator, findVariant, groupOf } from '../utilities/indicatorSeasons';
 
 export const AppContext = createContext();
 
@@ -27,6 +28,7 @@ export const AppContextProvider = ({ children }) => {
     // ----- Data Filters -----
     const [selectedHazard, setSelectedHazard] = useState('extreme_temperature');
     const [selectedIndicatorId, setSelectedIndicatorId] = useState('D40C');
+    const [selectedSeason, setSelectedSeason] = useState(ScreeningData.seasons[0]);
     const [selectedModel, setSelectedModel] = useState(ScreeningData.models.rcp45);
     const [timeframe, setTimeframe] = useState(ScreeningData.timeframe.mid);
 
@@ -73,11 +75,34 @@ export const AppContextProvider = ({ children }) => {
     const updateSelectedHazard = useCallback(
         async (value) => {
             await _updateSelectedHazard(
-                { value, selectedIndicatorId, setSelectedIndicatorId },
+                { value, selectedIndicatorId, selectedSeason, setSelectedIndicatorId },
                 setSelectedHazard
             );
         },
-        [selectedIndicatorId, setSelectedIndicatorId]
+        [selectedIndicatorId, selectedSeason, setSelectedIndicatorId]
+    );
+
+    // Pick an indicator from the list; seasonal ones use the selected season
+    const selectIndicatorGroup = useCallback(
+        (groupId) => {
+            const indicator = findVariant(groupId, selectedSeason);
+            if (indicator) {
+                setSelectedIndicatorId(indicator.id);
+            }
+        },
+        [selectedSeason]
+    );
+
+    // Change the season and switch the selected indicator to the same season
+    const updateSelectedSeason = useCallback(
+        (season) => {
+            setSelectedSeason(season);
+            const current = findIndicator(selectedIndicatorId);
+            if (current?.season) {
+                setSelectedIndicatorId(findVariant(groupOf(current), season).id);
+            }
+        },
+        [selectedIndicatorId]
     );
 
     const updateSearchResult = useCallback(
@@ -134,10 +159,13 @@ export const AppContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (selectedHazard && areaOfInterestInfo?.allIndicators) {
-            const hazardIndicators = areaOfInterestInfo?.allIndicators.filter((indicator) => indicator[selectedHazard]);
+            // Seasonal indicators are listed for the selected season only
+            const hazardIndicators = areaOfInterestInfo?.allIndicators.filter(
+                (indicator) => indicator[selectedHazard] && (!indicator.season || indicator.season === selectedSeason)
+            );
             setIndicators(hazardIndicators);
         }
-    }, [selectedHazard, areaOfInterestInfo]);
+    }, [selectedHazard, selectedSeason, areaOfInterestInfo]);
 
     return (
         <AppContext.Provider
@@ -146,8 +174,11 @@ export const AppContextProvider = ({ children }) => {
                 selectedHazard,
                 selectedIndicatorId,
                 selectedModel,
+                selectedSeason,
                 timeframe,
                 updateSelectedHazard,
+                updateSelectedSeason,
+                selectIndicatorGroup,
                 setSelectedModel,
                 setTimeframe,
 
