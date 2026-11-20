@@ -172,9 +172,9 @@ const enTranslation = {
             },
             {
                 Id: 'development',
-                Title: 'Development and adaptation',
+                Title: 'Dashboard adaptation and development',
                 Blocks: [
-                    'The dashboard adaptation, locally developed analytical components, and original materials are credited to CDE and its project partners, unless otherwise specified.',
+                    'Additional adaptations, locally developed components, analytical indicators, and custom functionalities are developed by CDE and its partners. These original contributions remain subject to the applicable intellectual property rights of their respective creators and rights holders.',
                     'This dashboard is an independent adaptation and is not an official NOAA product or an endorsement by NOAA.',
                 ],
             },
