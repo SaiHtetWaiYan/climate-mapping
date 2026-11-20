@@ -11,12 +11,11 @@ import { version } from '../../../package.json';
 // Component specific modules (Component-styled, etc.)
 import './AppHeader.scss';
 
-// Links shown in the header; those without an href are disabled until their pages exist
-// `page` items open a page inside the app
+// Links shown in the header: `href` opens another site in a new tab, `page` a page of this app
 const NAV_ITEMS = [
     { key: 'MainPage', href: 'https://climate.saihtet.dev/' },
-    { key: 'DataSources' },
     { key: 'UserGuide', page: AppRoutes.userGuidePage },
+    { key: 'CreditsAndSources', page: AppRoutes.creditsPage },
 ];
 
 // Four bars in the colours of the four hazards (heat, wet bulb, drought, flood)
@@ -31,7 +30,7 @@ const LogoMark = () => (
 
 const AppHeader = () => {
     const { t } = useTranslation();
-    const { page: currentPage, openUserGuide } = useAppContext();
+    const { page: currentPage, openTextPage } = useAppContext();
     // Narrow screens: the links open from a menu button
     const [menuOpen, setMenuOpen] = useState(false);
     const headerRef = useRef(null);
@@ -78,12 +77,12 @@ const AppHeader = () => {
                             aria-current={currentPage === page ? 'page' : undefined}
                             onClick={() => {
                                 setMenuOpen(false);
-                                openUserGuide();
+                                openTextPage(page);
                             }}
                         >
                             {t(`AppHeader.Nav.${key}`)}
                         </button>
-                    ) : href ? (
+                    ) : (
                         <a
                             key={key}
                             className="appHeader__nav-item"
@@ -93,15 +92,6 @@ const AppHeader = () => {
                         >
                             {t(`AppHeader.Nav.${key}`)}
                         </a>
-                    ) : (
-                        <span
-                            key={key}
-                            className="appHeader__nav-item appHeader__nav-item--disabled"
-                            aria-disabled="true"
-                            title={t('AppHeader.ComingSoon')}
-                        >
-                            {t(`AppHeader.Nav.${key}`)}
-                        </span>
                     )
                 )}
             </nav>

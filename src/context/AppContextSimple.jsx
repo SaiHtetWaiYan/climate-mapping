@@ -10,6 +10,9 @@ import { findIndicator, findVariant, groupOf } from '../utilities/indicatorOptio
 
 export const AppContext = createContext();
 
+// Pages of text opened from the header
+const TEXT_PAGES = [AppRoutes.userGuidePage, AppRoutes.creditsPage];
+
 export const emptyAreaOfInterestInfo = {
     geoId: null,
     geoName: null,
@@ -37,18 +40,21 @@ export const AppContextProvider = ({ children }) => {
 
     const [indicators, setIndicators] = useState();
     const [page, setPage] = useState(AppRoutes.mapPage);
-    // Page to return to when the user guide is closed
-    const [guideReturnPage, setGuideReturnPage] = useState(AppRoutes.mapPage);
+    // Text pages return to the map or details page they were opened from
+    const [textPageReturnPage, setTextPageReturnPage] = useState(AppRoutes.mapPage);
 
-    const openUserGuide = useCallback(() => {
-        if (page !== AppRoutes.userGuidePage) {
-            setGuideReturnPage(page);
-            setPage(AppRoutes.userGuidePage);
-        }
-        window.scrollTo(0, 0);
-    }, [page]);
+    const openTextPage = useCallback(
+        (textPage) => {
+            if (!TEXT_PAGES.includes(page)) {
+                setTextPageReturnPage(page);
+            }
+            setPage(textPage);
+            window.scrollTo(0, 0);
+        },
+        [page]
+    );
 
-    const closeUserGuide = useCallback(() => setPage(guideReturnPage), [guideReturnPage]);
+    const closeTextPage = useCallback(() => setPage(textPageReturnPage), [textPageReturnPage]);
 
     // ----- JSAPI State -----
     const [mapView, setMapView] = useState(null);
@@ -207,8 +213,8 @@ export const AppContextProvider = ({ children }) => {
                 setIndicators,
                 page,
                 setPage,
-                openUserGuide,
-                closeUserGuide,
+                openTextPage,
+                closeTextPage,
 
                 // JSAPI State
                 mapView,

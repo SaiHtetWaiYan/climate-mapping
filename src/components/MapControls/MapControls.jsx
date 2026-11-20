@@ -124,21 +124,6 @@ const MapControls = () => {
                         </Button>
                     </div>
                 </div>
-                <p className="mapControls__credit">
-                    {t('MapControls.Credit.Before')}
-                    <a href="https://github.com/NOAA-CRIS/CRIS" target="_blank" rel="noopener noreferrer">
-                        {t('MapControls.Credit.Link')}
-                    </a>
-                    {t('MapControls.Credit.Middle')}
-                    <a
-                        href={`${import.meta.env.BASE_URL}licenses/CRIS-LICENSE.txt`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {t('MapControls.Credit.License')}
-                    </a>
-                    .
-                </p>
             </div>
         </div>
     );

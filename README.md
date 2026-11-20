@@ -116,11 +116,13 @@ src/
   utilities/indicatorOptions.js  picks the indicator for the selected season or drought index
   context/                    app state and map controller
   components/                 map, controls, legend, search, indicator views
-  pages/                      map page and township details page
+  pages/                      map page, township details page, and the user guide and credits pages
 ```
 
 ## Credits
 
+The full credits, data sources and disclaimer are on the app's **Credits and Sources** page (text in `CreditsPage` in [`enTranslation.js`](src/constants/translations/enTranslation.js)).
+
 This project is adapted from the [Climate Resilience Information System (CRIS)](https://github.com/NOAA-CRIS/CRIS) assessment tool, Copyright (c) 2024 NOAA-CRIS, released under the MIT License. The full license text is in [`LICENSE`](LICENSE); a copy is deployed with the site at `/licenses/CRIS-LICENSE.txt` and linked from the app.
 
-Climate data: Climate Futures Myanmar. Township boundaries and names: MIMU.
+Climate data: CDE township indicators based on Messmer et al. (2026). Township boundaries and names: MIMU.

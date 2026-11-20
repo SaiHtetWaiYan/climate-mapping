@@ -64,8 +64,7 @@
             color: #fff;
         }
 
-        // links only; disabled items are spans
-        &:is(a):hover {
+        &:hover {
             text-decoration-thickness: 2px;
         }
 
@@ -83,19 +82,9 @@
             text-align: start;
             cursor: pointer;
 
-            &:hover {
-                text-decoration-thickness: 2px;
-            }
-
             &[aria-current='page'] {
                 font-weight: 700;
             }
-        }
-
-        // Disabled until the pages exist
-        &--disabled {
-            opacity: 0.55;
-            cursor: not-allowed;
         }
     }
 }

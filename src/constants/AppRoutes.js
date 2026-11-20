@@ -2,6 +2,7 @@ const AppRoutes = {
     mapPage: 'MAP_PAGE',
     detailsPage: 'DETAILS_PAGE',
     userGuidePage: 'USER_GUIDE_PAGE',
+    creditsPage: 'CREDITS_PAGE',
 
     root: { path: '/' },
     home: {

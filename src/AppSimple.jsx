@@ -5,7 +5,7 @@ import React from 'react';
 import AppHeader from './components/AppHeader';
 import MapPage from './pages/MapPage';
 import DetailsPage from './pages/DetailsPage';
-import UserGuidePage from './pages/UserGuidePage';
+import TextPage from './pages/TextPage';
 
 // Hooks, context, and constants
 import { useAppContext } from './context/AppContextSimple';
@@ -20,7 +20,8 @@ const App = () => {
         <div className="app-container">
             <AppHeader />
             {page === AppRoutes.detailsPage && <DetailsPage />}
-            {page === AppRoutes.userGuidePage && <UserGuidePage />}
+            {page === AppRoutes.userGuidePage && <TextPage key="guide" textKey="UserGuide" />}
+            {page === AppRoutes.creditsPage && <TextPage key="credits" textKey="CreditsPage" />}
             <MapPage active={page === AppRoutes.mapPage} />
         </div>
     );

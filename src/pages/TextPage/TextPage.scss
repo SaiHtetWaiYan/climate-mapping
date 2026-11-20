@@ -1,4 +1,4 @@
-.userGuidePage {
+.textPage {
     position: relative;
     z-index: 10;
     // Below the header
@@ -21,6 +21,8 @@
         margin: 1.5rem auto 0;
         color: var(--color-base-darkest);
         line-height: 1.6;
+        // Long links (DOIs, dataset addresses) wrap on narrow screens
+        overflow-wrap: anywhere;
 
         p {
             margin: 0 0 1rem;
@@ -105,7 +107,7 @@
 }
 
 @media screen and (max-width: 720px) {
-    .userGuidePage {
+    .textPage {
         padding-inline: 16px;
 
         &__title {

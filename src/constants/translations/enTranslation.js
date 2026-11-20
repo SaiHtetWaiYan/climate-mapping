@@ -130,14 +130,64 @@ const enTranslation = {
     },
     AppHeader: {
         NavLabel: 'Main',
-        ComingSoon: 'Coming soon',
         OpenMenu: 'Open menu',
         CloseMenu: 'Close menu',
         Nav: {
             MainPage: 'Main Page',
-            DataSources: 'Data Sources',
             UserGuide: 'User Guide',
+            CreditsAndSources: 'Credits and Sources',
         },
+    },
+    // Credits and sources page; links are written as [label](url)
+    CreditsPage: {
+        Title: 'Credits and Sources',
+        Intro: [
+            'This dashboard is produced under the Myanmar Locally Led Adaptation Project (MLLAP), 2025–2027, implemented by the Centre for Development and Environment (CDE) of the University of Bern, Switzerland, in collaboration with climate scientists from the Delft University of Technology, Netherlands and University of the Basque Country, Spain, with the financial support of the Department of Foreign Affairs and Trade (DFAT) and Swiss Agency for Development and Cooperation (SDC).',
+            'The user interface design and source code of this dashboard is adapted from the [Climate Resilience Information System (CRIS)](https://github.com/NOAA-CRIS/CRIS), developed by NOAA-CRIS and made available under the [MIT License](/licenses/CRIS-LICENSE.txt).',
+        ],
+        Sections: [
+            {
+                Id: 'sources',
+                Title: 'Additional data and information sources',
+                Blocks: [
+                    'The dashboard draws on data, information, and resources from the following organisations and sources:',
+                    {
+                        List: [
+                            {
+                                Text: 'Centre for Development and Environment (CDE). (2026). Myanmar Township Climate and Climate-Related Hazard Indicators Dataset. Derived township-level climate and climate-related hazard indicators for Myanmar, based on Messmer et al. (2026) and MIMU administrative boundaries (2023).',
+                            },
+                            {
+                                Text: 'Messmer, M., González-Rojí, S. J., Nay Chi, M. A., & Leonard, S. (2026). High-resolution regional climate modeling over Myanmar using WRF: Historical validation and future projections under different shared socioeconomic pathways. PLOS Climate, 5(2), e0000820. [https://doi.org/10.1371/journal.pclm.0000820](https://doi.org/10.1371/journal.pclm.0000820)',
+                            },
+                            {
+                                Text: 'Messmer, M., & González-Rojí, S. J. (2025). WRF climate projection datasets for Myanmar. Zenodo. [https://doi.org/10.5281/zenodo.17113911](https://doi.org/10.5281/zenodo.17113911)',
+                            },
+                            {
+                                Text: 'Myanmar Information Management Unit (MIMU). (2023). Myanmar Administrative Boundaries – PCode Version 9.4. MIMU Geospatial Data. [https://data.themimu.info/en/dataset/myanmar-administrative-boundary](https://data.themimu.info/en/dataset/myanmar-administrative-boundary)',
+                            },
+                        ],
+                    },
+                    'Original data and materials remain the property of their respective providers and are subject to their applicable licences and terms of use.',
+                ],
+            },
+            {
+                Id: 'development',
+                Title: 'Development and adaptation',
+                Blocks: [
+                    'The dashboard adaptation, locally developed analytical components, and original materials are credited to CDE and its project partners, unless otherwise specified.',
+                    'This dashboard is an independent adaptation and is not an official NOAA product or an endorsement by NOAA.',
+                ],
+            },
+            {
+                Id: 'disclaimer',
+                Title: 'Disclaimer and Limitations',
+                Blocks: [
+                    'The administrative boundaries are for reference and operational mapping purposes. CDE does not claim ownership of the original boundary data and does not independently certify their accuracy, completeness, legal status, or currency. The boundaries are reproduced subject to the limitations of the original source data.',
+                    'Neither MIMU nor the United Nations provides warranties regarding the accuracy or completeness of the source boundary information. The boundaries and names shown and the designations used on this map do not imply official endorsement or acceptance by the United Nations or MIMU. CDE shall not be held responsible for errors, omissions, or changes originating from the original administrative boundary data. MIMU and the United Nations should not be held responsible for the subsequent processing, derived indicators, analyses, or interpretations produced by CDE.',
+                    'Climate projections represent model-based scenarios rather than definitive predictions of future conditions. The dataset is intended for regional screening, research, and planning purposes and should be complemented by local data, field verification, and expert assessment where required. It should not be used as a substitute for authoritative administrative, cadastral, or legal boundary information.',
+                ],
+            },
+        ],
     },
     Alert: {
         RenderError: {
@@ -340,9 +390,9 @@ const enTranslation = {
             },
             {
                 Id: 'credits',
-                Title: 'Credits',
+                Title: 'Credits and sources',
                 Blocks: [
-                    'This tool is adapted from the Climate Resilience Information System (CRIS) assessment tool by NOAA, used under the MIT License.',
+                    'The full credits, data sources, and disclaimer and limitations are on the Credits and Sources page, opened from the header. The user interface is adapted from the Climate Resilience Information System (CRIS) by NOAA-CRIS, used under the MIT License.',
                 ],
             },
         ],
@@ -380,12 +430,6 @@ const enTranslation = {
         ClearBtn: 'Clear Selection',
         SearchTitle: 'Find a Myanmar township',
         MobileToggle: 'Search and filters',
-        Credit: {
-            Before: 'Adapted from the ',
-            Link: 'Climate Resilience Information System (CRIS)',
-            Middle: ' by NOAA, used under the ',
-            License: 'MIT License',
-        },
         CloseBtn: {
             Close: 'Clear selected area',
         },
