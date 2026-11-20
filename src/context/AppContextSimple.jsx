@@ -6,7 +6,7 @@ import ScreeningData from '../constants/ScreeningData';
 // Setter Functions
 import { _updateAreaOfInterestInfo, _updateMapView, _updateSelectedHazard } from './MapControllerSimple';
 import AppRoutes from '../constants/AppRoutes';
-import { findIndicator, findVariant, groupOf } from '../utilities/indicatorSeasons';
+import { findIndicator, findVariant, groupOf } from '../utilities/indicatorOptions';
 
 export const AppContext = createContext();
 
@@ -24,7 +24,10 @@ export const AppContextProvider = ({ children }) => {
     // ----- Data Filters -----
     const [selectedHazard, setSelectedHazard] = useState('extreme_temperature');
     const [selectedIndicatorId, setSelectedIndicatorId] = useState('D40C');
-    const [selectedSeason, setSelectedSeason] = useState(ScreeningData.seasons[0]);
+    // Selected season and drought index, e.g. { season: 'ANNUAL', index: 'SPEI3' }
+    const [selectedOptions, setSelectedOptions] = useState(
+        Object.fromEntries(Object.entries(ScreeningData.options).map(([type, values]) => [type, values[0]]))
+    );
     const [selectedModel, setSelectedModel] = useState(ScreeningData.models.rcp45);
     const [timeframe, setTimeframe] = useState(ScreeningData.timeframe.mid);
 
@@ -83,34 +86,35 @@ export const AppContextProvider = ({ children }) => {
     const updateSelectedHazard = useCallback(
         async (value) => {
             await _updateSelectedHazard(
-                { value, selectedIndicatorId, selectedSeason, setSelectedIndicatorId },
+                { value, selectedIndicatorId, selectedOptions, setSelectedIndicatorId },
                 setSelectedHazard
             );
         },
-        [selectedIndicatorId, selectedSeason, setSelectedIndicatorId]
+        [selectedIndicatorId, selectedOptions, setSelectedIndicatorId]
     );
 
-    // Pick an indicator from the list; seasonal ones use the selected season
+    // Pick an indicator from the list, in the selected season or drought index
     const selectIndicatorGroup = useCallback(
         (groupId) => {
-            const indicator = findVariant(groupId, selectedSeason);
+            const indicator = findVariant(groupId, selectedOptions);
             if (indicator) {
                 setSelectedIndicatorId(indicator.id);
             }
         },
-        [selectedSeason]
+        [selectedOptions]
     );
 
-    // Change the season and switch the selected indicator to the same season
-    const updateSelectedSeason = useCallback(
-        (season) => {
-            setSelectedSeason(season);
+    // Change the season or drought index and switch the selected indicator to match
+    const updateSelectedOption = useCallback(
+        (type, value) => {
+            const options = { ...selectedOptions, [type]: value };
+            setSelectedOptions(options);
             const current = findIndicator(selectedIndicatorId);
-            if (current?.season) {
-                setSelectedIndicatorId(findVariant(groupOf(current), season).id);
+            if (current?.optionType === type) {
+                setSelectedIndicatorId(findVariant(groupOf(current), options).id);
             }
         },
-        [selectedIndicatorId]
+        [selectedIndicatorId, selectedOptions]
     );
 
     const updateSearchResult = useCallback(
@@ -167,13 +171,15 @@ export const AppContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (selectedHazard && areaOfInterestInfo?.allIndicators) {
-            // Seasonal indicators are listed for the selected season only
+            // Indicators with options are listed for the selected season or drought index only
             const hazardIndicators = areaOfInterestInfo?.allIndicators.filter(
-                (indicator) => indicator[selectedHazard] && (!indicator.season || indicator.season === selectedSeason)
+                (indicator) =>
+                    indicator[selectedHazard] &&
+                    (!indicator.optionType || indicator.option === selectedOptions[indicator.optionType])
             );
             setIndicators(hazardIndicators);
         }
-    }, [selectedHazard, selectedSeason, areaOfInterestInfo]);
+    }, [selectedHazard, selectedOptions, areaOfInterestInfo]);
 
     return (
         <AppContext.Provider
@@ -182,10 +188,10 @@ export const AppContextProvider = ({ children }) => {
                 selectedHazard,
                 selectedIndicatorId,
                 selectedModel,
-                selectedSeason,
+                selectedOptions,
                 timeframe,
                 updateSelectedHazard,
-                updateSelectedSeason,
+                updateSelectedOption,
                 selectIndicatorGroup,
                 setSelectedModel,
                 setTimeframe,

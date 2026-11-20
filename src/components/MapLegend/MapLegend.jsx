@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppContext } from '../../context/AppContextSimple';
 import ScreeningData from '../../constants/ScreeningData';
-import { findIndicator } from '../../utilities/indicatorSeasons';
+import { findIndicator } from '../../utilities/indicatorOptions';
 
 // Third-party components (buttons, icons, etc.)
 import { Icon } from '@trussworks/react-uswds';

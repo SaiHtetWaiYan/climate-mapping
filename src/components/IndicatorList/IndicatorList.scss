@@ -66,8 +66,8 @@
         align-items: flex-start;
         gap: 0.25rem;
 
-        // Season dropdown: same width as the period dropdown above it
-        & .seasonSelect-container {
+        // Season or drought index dropdown: same width as the period dropdown above it
+        & .optionSelect-container {
             width: 100%;
         }
     }

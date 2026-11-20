@@ -13,7 +13,7 @@ import './IndicatorSelect.scss';
 // Third-party components (buttons, icons, etc.)
 import { Select } from '@trussworks/react-uswds';
 import ScreeningData from '../../constants/ScreeningData';
-import { findIndicator, groupOf } from '../../utilities/indicatorSeasons';
+import { findIndicator, groupOf } from '../../utilities/indicatorOptions';
 
 const IndicatorSelect = () => {
     // ----- Language -----

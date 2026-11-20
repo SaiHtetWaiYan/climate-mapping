@@ -2,7 +2,7 @@ import AppConfig from '../constants/AppConfig';
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import MapSymbols from '../constants/MapSymbols';
 import ScreeningData from '../constants/ScreeningData';
-import { findIndicator, findVariant, groupOf } from '../utilities/indicatorSeasons';
+import { findIndicator, findVariant, groupOf } from '../utilities/indicatorOptions';
 import { getIndicatorData, unionExtents } from '../utilities/arcgisUtils';
 import { getTownshipName } from '../utilities/geographyUtils';
 import { loadTownshipsGeoJSON } from '../utilities/townshipData';
@@ -28,7 +28,7 @@ const _updateMapView = async (args, setter) => {
 };
 
 const _updateSelectedHazard = async (args, setter) => {
-    const { value, selectedIndicatorId, selectedSeason, setSelectedIndicatorId } = args;
+    const { value, selectedIndicatorId, selectedOptions, setSelectedIndicatorId } = args;
     // If the selected indicator isn't part of the new hazard, select the hazard's first indicator
     const selectedIndicator = findIndicator(selectedIndicatorId);
 
@@ -37,7 +37,7 @@ const _updateSelectedHazard = async (args, setter) => {
             .filter((indicator) => indicator[value])
             .sort((a, b) => a[value] - b[value])[0];
         if (firstIndicator) {
-            setSelectedIndicatorId(findVariant(groupOf(firstIndicator), selectedSeason).id);
+            setSelectedIndicatorId(findVariant(groupOf(firstIndicator), selectedOptions).id);
         }
     }
     await setter(value);

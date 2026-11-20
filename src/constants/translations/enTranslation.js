@@ -78,8 +78,9 @@ const droughtText = () =>
                 const { intro, name } = DROUGHT_INDEX[index];
                 const label = `${index}-${months}`;
                 const full = `the ${months}-month ${name}`;
+                // Title includes the index (legend, details page); GroupTitle is the list entry
                 const entry = (title, details, baseline, unit, postfix) => ({
-                    Title: title,
+                    Title: `${title} (${label})`,
                     GroupTitle: title,
                     Details: details,
                     Prefix: '',
@@ -90,7 +91,7 @@ const droughtText = () =>
                     [
                         `${index}${months}_INT`,
                         entry(
-                            `Drought intensity (${label})`,
+                            'Drought intensity',
                             `Average intensity of drought events from ${full}`,
                             '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
                             '',
@@ -100,7 +101,7 @@ const droughtText = () =>
                     [
                         `${index}${months}_DUR`,
                         entry(
-                            `Drought duration (${label})`,
+                            'Drought duration',
                             `Average length of drought events from ${full}`,
                             'drought events in {{geoName}} lasted {{HISTORIC_MEAN}} months on average',
                             'months',
@@ -110,7 +111,7 @@ const droughtText = () =>
                     [
                         `${index}${months}_NUM`,
                         entry(
-                            `Number of drought events (${label})`,
+                            'Number of drought events',
                             `Average number of drought events from ${full}`,
                             '{{geoName}} had an average of {{HISTORIC_MEAN}} drought events',
                             'drought events',
@@ -174,8 +175,10 @@ const enTranslation = {
         Timeframe: {
             All: 'Timeframe',
         },
-        Season: {
-            ShortLabel: 'Season',
+        // Dropdowns for indicators that come in several versions (see ScreeningData.options)
+        Options: {
+            season: 'Season',
+            index: 'Drought index',
         },
     },
     UserGuide: {
@@ -246,6 +249,10 @@ const enTranslation = {
                                 Text: 'shown only for indicators that have seasonal values (wet bulb temperature and flood): Annual, Hot season, Cold season or Wet season.',
                             },
                             {
+                                Term: 'Drought index',
+                                Text: 'shown for drought: the index used to measure drought intensity, duration or number of events. SPEI uses rainfall and evaporation, SPI uses rainfall only, each over 3, 6, 12 or 24 months.',
+                            },
+                            {
                                 Term: 'Timeframe',
                                 Text: 'Historical (1981–2010), Near Future (2031–2060) or Far Future (2071–2100). Each value is a 30-year average.',
                             },
@@ -290,8 +297,8 @@ const enTranslation = {
                                 Text: 'switch between the four hazards at the top of the page.',
                             },
                             {
-                                Term: 'Period and season',
-                                Text: 'choose Near Future or Far Future, and the season where it applies.',
+                                Term: 'Period, season and drought index',
+                                Text: 'choose Near Future or Far Future, and the season or drought index where it applies.',
                             },
                             {
                                 Term: 'Indicator rows',
@@ -405,11 +412,23 @@ const enTranslation = {
         Stats: {
             MEAN: 'Mean',
         },
-        Seasons: {
-            ANNUAL: 'Annual',
-            HOT: 'Hot season',
-            COLD: 'Cold season',
-            WET: 'Wet season',
+        Options: {
+            season: {
+                ANNUAL: 'Annual',
+                HOT: 'Hot season',
+                COLD: 'Cold season',
+                WET: 'Wet season',
+            },
+            index: {
+                SPEI3: 'SPEI-3 (3 months)',
+                SPEI6: 'SPEI-6 (6 months)',
+                SPEI12: 'SPEI-12 (12 months)',
+                SPEI24: 'SPEI-24 (24 months)',
+                SPI3: 'SPI-3 (3 months)',
+                SPI6: 'SPI-6 (6 months)',
+                SPI12: 'SPI-12 (12 months)',
+                SPI24: 'SPI-24 (24 months)',
+            },
         },
         Models: {
             RCP45: {

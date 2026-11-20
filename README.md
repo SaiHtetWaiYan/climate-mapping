@@ -9,12 +9,12 @@ Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://devel
 
 ## Indicators
 
-| Hazard | Indicators | Seasons |
+| Hazard | Indicators | Option dropdown |
 |---|---|---|
 | Extreme heat | Hot-season days above 40°C and 45°C, longest run of days above 40°C, longest run of nights above 30°C and 35°C, longest heat wave | — |
-| Wet bulb temperature | Days with wet-bulb temperature above 25°C, 28°C and 31°C | Annual, hot, cold, wet |
-| Drought | Intensity, duration and number of drought events (SPEI and SPI over 3, 6, 12 and 24 months) | — |
-| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain | Annual, hot, cold, wet |
+| Wet bulb temperature | Days with wet-bulb temperature above 25°C, 28°C and 31°C | Season: annual, hot, cold or wet |
+| Drought | Intensity, duration and number of drought events | Drought index: SPEI or SPI over 3, 6, 12 or 24 months |
+| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain | Season: annual, hot, cold or wet |
 
 Each indicator has values for three periods and two scenarios:
 
@@ -113,7 +113,7 @@ src/
   constants/translations/     all user-facing text
   constants/AppConfig.js      basemap, API URL, renderer template
   utilities/townshipData.js   loads the townships from the API
-  utilities/indicatorSeasons.js  picks the indicator for the selected season
+  utilities/indicatorOptions.js  picks the indicator for the selected season or drought index
   context/                    app state and map controller
   components/                 map, controls, legend, search, indicator views
   pages/                      map page and township details page

@@ -8,7 +8,8 @@ import ScreeningData from '../../constants/ScreeningData';
 
 // App components
 import IndicatorItem from './IndicatorItem';
-import SeasonSelect from '../SeasonSelect';
+import OptionSelect from '../OptionSelect';
+import { optionTypesOfHazard } from '../../utilities/indicatorOptions';
 
 // Component specific modules (Component-styled, etc.)
 import './IndicatorList.scss';
@@ -27,14 +28,8 @@ const IndicatorList = () => {
 
     const { indicators, timeframe, setTimeframe, selectedHazard } = useAppContext();
 
-    // Seasons used by this hazard's indicators
-    const hazardSeasons = useMemo(
-        () =>
-            ScreeningData.seasons.filter((season) =>
-                ScreeningData.indicators.some((indicator) => indicator[selectedHazard] && indicator.season === season)
-            ),
-        [selectedHazard]
-    );
+    // Seasons or drought indices used by this hazard's indicators
+    const hazardOptionTypes = useMemo(() => optionTypesOfHazard(selectedHazard), [selectedHazard]);
 
     const localIndicators = useMemo(() => {
         return (indicators ?? []).sort((a, b) => a[selectedHazard] - b[selectedHazard]);
@@ -74,14 +69,18 @@ const IndicatorList = () => {
                             >
                                 {futureTimeframes.map((value, idx) => (
                                     <option value={value} key={idx}>
-                                        {t(`Data.Time.${value}.Label`) +
-                                            ' (' +
-                                            t(`Data.Time.${value}.Years`) +
-                                            ')'}
+                                        {t(`Data.Time.${value}.Label`) + ' (' + t(`Data.Time.${value}.Years`) + ')'}
                                     </option>
                                 ))}
                             </Select>
-                            <SeasonSelect seasons={hazardSeasons} showLabel={false} />
+                            {hazardOptionTypes.map((type) => (
+                                <OptionSelect
+                                    key={type}
+                                    type={type}
+                                    values={ScreeningData.options[type]}
+                                    showLabel={false}
+                                />
+                            ))}
                         </div>
                         <div className="indicatorList-header-container--end">
                             <div className="indicatorList-header--orange">

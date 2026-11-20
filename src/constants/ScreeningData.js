@@ -17,7 +17,7 @@ const SEASONS = {
 
 /**
  * One indicator per season, with IDs like WBT28_HOT. They share a `group` so the app can show
- * one entry in the indicator list and a season dropdown.
+ * one entry in the indicator list and a season dropdown (optionType 'season').
  * @param {Object} base indicator settings; `source` contains {season}
  * @param {Object} formats number format per season, when it differs from base.format
  * @param {string} annualName API name of the annual season ('annual_season' for wet-bulb fields)
@@ -27,7 +27,8 @@ const seasonal = (base, formats = {}, annualName = SEASONS.ANNUAL) =>
         ...base,
         id: `${base.id}_${season}`,
         group: base.id,
-        season,
+        optionType: 'season',
+        option: season,
         source: base.source.replace('{season}', season === 'ANNUAL' ? annualName : apiSeason),
         format: formats[season] ?? base.format,
     }));
@@ -38,25 +39,29 @@ const DROUGHT_MEASURES = [
     { key: 'DUR', api: 'duration', format: '0,0.0', reverseColorRamp: true },
     { key: 'NUM', api: 'NumEvents', format: '0,0.00', reverseColorRamp: true },
 ];
-const droughtIndicators = () => {
-    let order = 0;
-    return DROUGHT_MEASURES.flatMap((measure) =>
-        ['SPEI', 'SPI'].flatMap((index) =>
-            [3, 6, 12, 24].map((months) => ({
-                id: `${index}${months}_${measure.key}`,
-                source: `${index}${months}_${measure.api}_annual`,
-                ...hazardOrder('drought', ++order),
-                format: measure.format,
-                // Brown 1 runs dark to light: intensity is negative (most severe = darkest);
-                // duration and number of events are reversed so the highest values are darkest
-                colorRampName: 'Brown 1',
-                reverseColorRamp: measure.reverseColorRamp,
-                // Intensity is negative: the lower the value, the more severe the drought
-                lowerIsWorse: measure.key === 'INT',
-            }))
-        )
+// Drought indices, chosen in the drought index dropdown (optionType 'index')
+const DROUGHT_INDICES = ['SPEI', 'SPI'].flatMap((index) => [3, 6, 12, 24].map((months) => `${index}${months}`));
+
+// One list entry per measure (intensity, duration, number of events), e.g. DROUGHT_INT, with one
+// indicator per index, e.g. SPEI6_INT
+const droughtIndicators = () =>
+    DROUGHT_MEASURES.flatMap((measure, measureIdx) =>
+        DROUGHT_INDICES.map((index) => ({
+            id: `${index}_${measure.key}`,
+            group: `DROUGHT_${measure.key}`,
+            optionType: 'index',
+            option: index,
+            source: `${index}_${measure.api}_annual`,
+            ...hazardOrder('drought', measureIdx + 1),
+            format: measure.format,
+            // Brown 1 runs dark to light: intensity is negative (most severe = darkest);
+            // duration and number of events are reversed so the highest values are darkest
+            colorRampName: 'Brown 1',
+            reverseColorRamp: measure.reverseColorRamp,
+            // Intensity is negative: the lower the value, the more severe the drought
+            lowerIsWorse: measure.key === 'INT',
+        }))
     );
-};
 
 const ScreeningData = {
     // The API provides the 30-year mean for each period
@@ -96,9 +101,14 @@ const ScreeningData = {
         nameField: 'TS',
         regionNameField: 'ST',
     },
-    seasons: Object.keys(SEASONS),
+    // Indicators that come in several versions share a `group` and have an `optionType` and `option`:
+    // a season (wet bulb, flood) or a drought index. The app shows one list entry per group and a
+    // dropdown for the option.
+    options: {
+        season: Object.keys(SEASONS),
+        index: DROUGHT_INDICES,
+    },
     // `source` is the API field alias without the period suffix.
-    // Seasonal indicators have `group` (shared by its seasons) and `season`.
     indicators: [
         // Extreme heat
         {
