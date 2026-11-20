@@ -20,7 +20,7 @@ Under a high emissions scenario (SSP5-8.5), models project an average of:
 
 All values are 30-year averages.
 
-Source: Climate Futures Myanmar township projections.`;
+Source: CDE (2026), Myanmar Township Climate and Climate-Related Hazard Indicators Dataset, based on Messmer et al. (2026).`;
 };
 
 const WET_BULB_INTRO =
@@ -37,8 +37,8 @@ const HEAT_NIGHTS_INTRO =
 const SEASON_TEXT = {
     ANNUAL: { label: 'annual', per: 'per year', in: 'in a year' },
     HOT: { label: 'hot season', per: 'per hot season', in: 'in the hot season' },
-    COLD: { label: 'cold season', per: 'per cold season', in: 'in the cold season' },
     WET: { label: 'wet season', per: 'per wet season', in: 'in the wet season' },
+    COLD: { label: 'cold season', per: 'per cold season', in: 'in the cold season' },
 };
 
 /**
@@ -296,7 +296,7 @@ const enTranslation = {
                             },
                             {
                                 Term: 'Season',
-                                Text: 'shown only for indicators that have seasonal values (wet bulb temperature and flood): Annual, Hot season, Cold season or Wet season.',
+                                Text: 'shown only for indicators that have seasonal values (wet bulb temperature and flood): Annual, Hot season, Wet season or Cold season.',
                             },
                             {
                                 Term: 'Drought index',
@@ -384,7 +384,7 @@ const enTranslation = {
                 Id: 'data',
                 Title: 'About the data',
                 Blocks: [
-                    'The values are township averages of climate model projections from the Climate Futures Myanmar township dataset, loaded from the CDE climate hazard service each time the map opens. Township boundaries and names are from MIMU.',
+                    'The values come from the Myanmar Township Climate and Climate-Related Hazard Indicators Dataset of the Centre for Development and Environment (CDE, 2026): township averages of the high-resolution regional climate projections by Messmer et al. (2026). They are loaded from the CDE climate hazard service each time the map opens. Township boundaries and names are from MIMU (2023). Full references are on the Credits and Sources page.',
                     'Projections describe possible future conditions under each emissions scenario. They are 30-year averages, not forecasts for a particular year, and are best used to compare townships and to see the direction and size of change.',
                 ],
             },
@@ -460,8 +460,8 @@ const enTranslation = {
             season: {
                 ANNUAL: 'Annual',
                 HOT: 'Hot season',
-                COLD: 'Cold season',
                 WET: 'Wet season',
+                COLD: 'Cold season',
             },
             index: {
                 SPEI3: 'SPEI-3 (3 months)',

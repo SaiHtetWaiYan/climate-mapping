@@ -11,8 +11,8 @@ const hazardOrder = (hazardId, order) => ({
 const SEASONS = {
     ANNUAL: 'annual',
     HOT: 'hot_season',
-    COLD: 'cold_season',
     WET: 'wet_season',
+    COLD: 'cold_season',
 };
 
 /**

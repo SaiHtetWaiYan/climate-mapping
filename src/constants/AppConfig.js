@@ -2,7 +2,7 @@ const AppConfig = {
     // Esri light gray canvas basemap
     basemap: 'gray-vector',
     datasets: {
-        // Township boundaries and indicator values (Climate Futures Myanmar, CDE)
+        // Township boundaries and indicator values (CDE township indicators, based on Messmer et al. 2026)
         climateHazards: {
             url: 'https://gis.cde.unibe.ch/gis/rest/services/Hosted/climate_hazard/FeatureServer/0',
             // Full-detail boundaries: simplifying them leaves gaps between neighbouring townships.

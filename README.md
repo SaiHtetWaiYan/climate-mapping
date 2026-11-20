@@ -1,6 +1,6 @@
 # Climate Mapping
 
-An interactive map of township-level climate hazard projections for Myanmar, using data from the Climate Futures Myanmar modelling team. Choose a hazard, indicator, time period and emissions scenario to colour all townships on the map, then open any township to see its projections as a chart, table and written summary.
+An interactive map of township-level climate hazard projections for Myanmar, using the township climate and hazard indicators of the Centre for Development and Environment (CDE), based on regional climate projections by Messmer et al. (2026). Choose a hazard, indicator, time period and emissions scenario to colour all townships on the map, then open any township to see its projections as a chart, table and written summary.
 
 Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/latest/) 5.1, adapted from the assessment tool of the [Climate Resilience Information System (CRIS)](https://github.com/NOAA-CRIS/CRIS) by NOAA, used under the MIT License (see [Credits](#credits)).
 
@@ -12,9 +12,9 @@ Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://devel
 | Hazard | Indicators | Option dropdown |
 |---|---|---|
 | Extreme heat | Hot-season days above 40°C and 45°C, longest run of days above 40°C, longest run of nights above 30°C and 35°C, longest heat wave | — |
-| Wet bulb temperature | Days with wet-bulb temperature above 25°C, 28°C and 31°C | Season: annual, hot, cold or wet |
+| Wet bulb temperature | Days with wet-bulb temperature above 25°C, 28°C and 31°C | Season: annual, hot, wet or cold |
 | Drought | Intensity, duration and number of drought events | Drought index: SPEI or SPI over 3, 6, 12 or 24 months |
-| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain | Season: annual, hot, cold or wet |
+| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain | Season: annual, hot, wet or cold |
 
 Each indicator has values for three periods and two scenarios:
 
