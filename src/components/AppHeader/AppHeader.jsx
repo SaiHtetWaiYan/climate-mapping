@@ -13,7 +13,7 @@ import './AppHeader.scss';
 
 // Links shown in the header: `href` opens another site in a new tab, `page` a page of this app
 const NAV_ITEMS = [
-    { key: 'MainPage', href: 'https://climate.saihtet.dev/' },
+    { key: 'MainPage', href: 'https://www.climatefutures-mm.org/' },
     { key: 'UserGuide', page: AppRoutes.userGuidePage },
     { key: 'CreditsAndSources', page: AppRoutes.creditsPage },
 ];

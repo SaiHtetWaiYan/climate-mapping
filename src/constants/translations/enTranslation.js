@@ -26,9 +26,9 @@ Source: CDE (2026), Myanmar Township Climate and Climate-Related Hazard Indicato
 const WET_BULB_INTRO =
     'Wet-bulb temperature combines heat and humidity. Above about 28°C the body struggles to cool itself by sweating, causing serious physiological strain, including heat stress injuries, cardiovascular events and kidney damage. The theoretical limit for human survival is about 31°C.';
 const SPEI_INTRO = (months) =>
-    `The Standardized Precipitation Evapotranspiration Index (SPEI) measures the difference between water supply (rainfall) and water demand (evaporation from land and plants). SPEI-${months} looks at drought conditions over ${months} months. A value of 0 means no drought; the more negative the value, the more intense the drought.`;
+    `The Standardized Precipitation Evapotranspiration Index (SPEI) measures the difference between water supply (rainfall) and water demand (evaporation from land and plants). SPEI-${months} looks at drought conditions over ${months} months.`;
 const SPI_INTRO = (months) =>
-    `The Standardized Precipitation Index (SPI) compares rainfall with the long-term normal. SPI-${months} looks at rainfall over ${months} months. A value of 0 means normal rainfall; the more negative the value, the more intense the drought.`;
+    `The Standardized Precipitation Index (SPI) compares rainfall with the long-term normal. SPI-${months} looks at rainfall over ${months} months.`;
 
 const HEAT_NIGHTS_INTRO =
     'Hot nights stop the body from recovering from daytime heat, raising the risk of heat stress, especially for older people and those without cooling.';
@@ -43,18 +43,20 @@ const SEASON_TEXT = {
 
 /**
  * Text for one indicator in each season, keyed like WBT28_HOT.
- * GroupTitle is shown in the indicator list; Title (with the season) on the legend and details page.
+ * GroupTitle (listTitle, or the title) is shown in the indicator list; Title (with the season) on the
+ * legend and details page.
  * @param {string} id indicator group ID, e.g. 'WBT28'
  * @param {Function} text (season) => { title, details, baseline, unit, intro, postfix }
  */
 const seasonalText = (id, text) =>
     Object.fromEntries(
         Object.entries(SEASON_TEXT).map(([season, s]) => {
-            const { title, details, baseline, unit, intro, postfix = 'Days' } = text(s);
+            // listTitle: the indicator list entry, when it differs from the title (e.g. adds a threshold)
+            const { title, listTitle = title, details, baseline, unit, intro, postfix = 'Days' } = text(s);
             return [
                 `${id}_${season}`,
                 {
-                    GroupTitle: title,
+                    GroupTitle: listTitle,
                     Title: `${title} (${s.label})`,
                     Details: details,
                     Prefix: '',
@@ -65,9 +67,18 @@ const seasonalText = (id, text) =>
         })
     );
 
+// valueNote explains the index values; it only applies to drought intensity
 const DROUGHT_INDEX = {
-    SPEI: { intro: SPEI_INTRO, name: 'Standardized Precipitation Evapotranspiration Index' },
-    SPI: { intro: SPI_INTRO, name: 'Standardized Precipitation Index' },
+    SPEI: {
+        intro: SPEI_INTRO,
+        name: 'Standardized Precipitation Evapotranspiration Index',
+        valueNote: 'A value of 0 means no drought; the more negative the value, the more intense the drought.',
+    },
+    SPI: {
+        intro: SPI_INTRO,
+        name: 'Standardized Precipitation Index',
+        valueNote: 'A value of 0 means normal rainfall; the more negative the value, the more intense the drought.',
+    },
 };
 
 // Intensity, duration and number of events for SPEI and SPI over 3, 6, 12 and 24 months
@@ -75,47 +86,55 @@ const droughtText = () =>
     Object.fromEntries(
         ['SPEI', 'SPI'].flatMap((index) =>
             [3, 6, 12, 24].flatMap((months) => {
-                const { intro, name } = DROUGHT_INDEX[index];
+                const { intro, name, valueNote } = DROUGHT_INDEX[index];
                 const label = `${index}-${months}`;
                 const full = `the ${months}-month ${name}`;
-                // Title includes the index (legend, details page); GroupTitle is the list entry
-                const entry = (title, details, baseline, unit, postfix) => ({
+                // Title includes the index (legend, details page); GroupTitle is the indicator list
+                // entry, with the unit in brackets. measureNote follows the index introduction on the
+                // Details tab and explains this measure.
+                const entry = (title, listUnit, details, baseline, unit, postfix, measureNote) => ({
                     Title: `${title} (${label})`,
-                    GroupTitle: title,
+                    GroupTitle: `${title} (${listUnit})`,
                     Details: details,
                     Prefix: '',
                     Postfix: postfix,
-                    LongText: projectionText({ intro: intro(months), baseline, unit }),
+                    LongText: projectionText({ intro: `${intro(months)} ${measureNote}`, baseline, unit }),
                 });
                 return [
                     [
                         `${index}${months}_INT`,
                         entry(
                             'Drought intensity',
-                            `Average intensity of drought events from ${full}`,
-                            '{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}}',
+                            'SPI/SPEI value',
+                            `Average intensity of drought events from ${full} (${index} value)`,
+                            `{{geoName}} had an average drought intensity of {{HISTORIC_MEAN}} (${index} value)`,
                             '',
-                            index
+                            index,
+                            `This indicator is the average intensity of drought events. ${valueNote}`
                         ),
                     ],
                     [
                         `${index}${months}_DUR`,
                         entry(
-                            'Drought duration',
-                            `Average length of drought events from ${full}`,
+                            'Drought-event duration',
+                            'months/event',
+                            `Average length of drought events from ${full} (months/event)`,
                             'drought events in {{geoName}} lasted {{HISTORIC_MEAN}} months on average',
-                            'months',
-                            'Months'
+                            'months per event',
+                            'Months/event',
+                            'This indicator is the average length of a drought event, in months per event.'
                         ),
                     ],
                     [
                         `${index}${months}_NUM`,
                         entry(
                             'Number of drought events',
-                            `Average number of drought events from ${full}`,
-                            '{{geoName}} had an average of {{HISTORIC_MEAN}} drought events',
-                            'drought events',
-                            'Events'
+                            'events/year',
+                            `Average number of drought events per year from ${full} (events/year)`,
+                            '{{geoName}} had an average of {{HISTORIC_MEAN}} drought events per year',
+                            'drought events per year',
+                            'Events/year',
+                            'This indicator is the average number of separate drought events per year.'
                         ),
                     ],
                 ];
@@ -296,7 +315,7 @@ const enTranslation = {
                             },
                             {
                                 Term: 'Season',
-                                Text: 'shown only for indicators that have seasonal values (wet bulb temperature and flood): Annual, Hot season, Wet season or Cold season.',
+                                Text: 'shown only for indicators that have seasonal values (wet bulb temperature and flood): Annual, Hot season (March–May), Wet season (June–October) or Cold season (November–February).',
                             },
                             {
                                 Term: 'Drought index',
@@ -304,7 +323,7 @@ const enTranslation = {
                             },
                             {
                                 Term: 'Timeframe',
-                                Text: 'Historical (1981–2010), Near Future (2031–2060) or Far Future (2071–2100). Each value is a 30-year average.',
+                                Text: 'Modeled History (1981–2010), Near Future (2031–2060) or Far Future (2071–2100). Each value is a 30-year average.',
                             },
                             {
                                 Term: 'Scenario',
@@ -440,8 +459,8 @@ const enTranslation = {
     Data: {
         Time: {
             HISTORIC: {
-                LongLabel: 'Historical (1981–2010)',
-                Label: 'Historical',
+                LongLabel: 'Modeled History (1981–2010)',
+                Label: 'Modeled History',
                 Years: '1981–2010',
             },
             MID: {
@@ -457,11 +476,12 @@ const enTranslation = {
             MEAN: 'Mean',
         },
         Options: {
+            // Months of each season in the dataset
             season: {
                 ANNUAL: 'Annual',
-                HOT: 'Hot season',
-                WET: 'Wet season',
-                COLD: 'Cold season',
+                HOT: 'Hot season (Mar–May)',
+                WET: 'Wet season (Jun–Oct)',
+                COLD: 'Cold season (Nov–Feb)',
             },
             index: {
                 SPEI3: 'SPEI-3 (3 months)',
@@ -525,7 +545,7 @@ const enTranslation = {
             }),
         },
         CD40C: {
-            Title: 'Longest run of days with maximum temperature > 40°C',
+            Title: 'Annual longest run of days with maximum temperature > 40°C',
             Details: 'Longest run of consecutive days per year when the daily maximum temperature exceeds 40°C',
             Prefix: '',
             Postfix: 'Days',
@@ -536,7 +556,7 @@ const enTranslation = {
             }),
         },
         CN30C: {
-            Title: 'Longest run of nights > 30°C',
+            Title: 'Annual longest run of nights > 30°C',
             Details: 'Longest run of consecutive nights per year when the temperature stays above 30°C',
             Prefix: '',
             Postfix: 'Nights',
@@ -548,7 +568,7 @@ const enTranslation = {
             }),
         },
         CN35C: {
-            Title: 'Longest run of nights > 35°C',
+            Title: 'Annual longest run of nights > 35°C',
             Details: 'Longest run of consecutive nights per year when the temperature stays above 35°C',
             Prefix: '',
             Postfix: 'Nights',
@@ -560,12 +580,15 @@ const enTranslation = {
             }),
         },
         HWD: {
-            Title: 'Longest heat wave',
-            Details: 'Duration of the longest heat wave per year',
+            Title: 'Hot-season longest heatwave duration',
+            // No final full stop: the legend explanation adds one
+            Details:
+                'Maximum number of consecutive days during April–June on which daily maximum temperature exceeds the historical 90th percentile threshold, with a minimum duration of two consecutive days',
             Prefix: '',
             Postfix: 'Days',
             LongText: projectionText({
-                baseline: 'the longest heat wave in {{geoName}} lasted {{HISTORIC_MEAN}} days per year on average',
+                intro: 'A heatwave here is a run of at least two consecutive days, during April–June, on which the daily maximum temperature exceeds the historical 90th percentile threshold. This indicator is the length of the longest such run.',
+                baseline: 'the longest hot-season heatwave in {{geoName}} lasted {{HISTORIC_MEAN}} days on average',
                 unit: 'days',
             }),
         },
@@ -573,10 +596,10 @@ const enTranslation = {
             (all, threshold) => ({
                 ...all,
                 ...seasonalText(`WBT${threshold}`, (s) => ({
-                    title: `Days with wet-bulb temperature > ${threshold}°C`,
-                    details: `Number of days ${s.in} when the daily wet-bulb temperature exceeds ${threshold}°C`,
+                    title: `Days with maximum wet-bulb temperature > ${threshold}°C`,
+                    details: `Number of days ${s.in} when the daily maximum wet-bulb temperature exceeds ${threshold}°C`,
                     intro: WET_BULB_INTRO,
-                    baseline: `{{geoName}} averaged {{HISTORIC_MEAN}} days ${s.per} with a wet-bulb temperature above ${threshold}°C`,
+                    baseline: `{{geoName}} averaged {{HISTORIC_MEAN}} days ${s.per} with a maximum wet-bulb temperature above ${threshold}°C`,
                     unit: `days ${s.per}`,
                 })),
             }),
@@ -585,12 +608,14 @@ const enTranslation = {
         ...droughtText(),
         ...seasonalText('DRY', (s) => ({
             title: 'Dry days',
+            listTitle: 'Dry days (< 1mm)',
             details: `Number of dry days ${s.in}`,
             baseline: `{{geoName}} averaged {{HISTORIC_MEAN}} dry days ${s.per}`,
             unit: `dry days ${s.per}`,
         })),
         ...seasonalText('CWD', (s) => ({
             title: 'Longest run of wet days',
+            listTitle: 'Longest run of wet days (> 1mm)',
             details: `Longest run of consecutive wet days ${s.in}`,
             intro: 'Long wet spells saturate the soil and raise the risk of river flooding.',
             baseline: `the longest run of consecutive wet days in {{geoName}} averaged {{HISTORIC_MEAN}} days ${s.per}`,

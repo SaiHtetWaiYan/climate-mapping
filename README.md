@@ -11,16 +11,16 @@ Built with React 19, Vite and the [ArcGIS Maps SDK for JavaScript](https://devel
 
 | Hazard | Indicators | Option dropdown |
 |---|---|---|
-| Extreme heat | Hot-season days above 40°C and 45°C, longest run of days above 40°C, longest run of nights above 30°C and 35°C, longest heat wave | — |
-| Wet bulb temperature | Days with wet-bulb temperature above 25°C, 28°C and 31°C | Season: annual, hot, wet or cold |
+| Extreme heat | Hot-season days above 40°C and 45°C, annual longest run of days above 40°C, annual longest run of nights above 30°C and 35°C, hot-season longest heatwave duration | — |
+| Wet bulb temperature | Days with maximum wet-bulb temperature above 25°C, 28°C and 31°C | Season: annual, hot (Mar–May), wet (Jun–Oct) or cold (Nov–Feb) |
 | Drought | Intensity, duration and number of drought events | Drought index: SPEI or SPI over 3, 6, 12 or 24 months |
-| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain | Season: annual, hot, wet or cold |
+| Flood | Dry days, longest run of wet days, days with more than 50 mm of rain | Season: annual, hot (Mar–May), wet (Jun–Oct) or cold (Nov–Feb) |
 
 Each indicator has values for three periods and two scenarios:
 
 | Period | Years | Scenarios |
 |---|---|---|
-| Historical | 1981–2010 | — |
+| Modeled History | 1981–2010 | — |
 | Near future | 2031–2060 | SSP2-4.5, SSP5-8.5 |
 | Far future | 2071–2100 | SSP2-4.5, SSP5-8.5 |
 
